@@ -116,8 +116,8 @@ if (scalar(@ist) > 0) {
 #####################################
 # list of symbols and abbreviations #
 #####################################
-system("makeindex -s coppe.ist -o output.los output.syx");
-system("makeindex -s coppe.ist -o output.lab output.abx");
+system("makeindex -s ufca.ist -o output.los output.syx");
+system("makeindex -s ufca.ist -o output.lab output.abx");
 
 ################
 # nomenclature #
