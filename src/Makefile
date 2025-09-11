@@ -154,5 +154,5 @@ example.tex: $(PACKAGE_NAME).ins
 
 clean:
 	@$(_rm) -f *.log *.aux *.ist *.idx *.blg *.bbl *.glo *.bcf *.xml \
-		*.toc *.lof *.lot *.syx *.abx *.lab *.ilg *.los *.ind \
+		*.toc *.lof *.lot *.syx *.abx *.lab *.ilg *.los *.ind *.hd \
 		*.gls *.out *~ ufca.{dvi,pdf} ufca.cls example.pdf example.tex
