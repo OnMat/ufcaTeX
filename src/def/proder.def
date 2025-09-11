@@ -1,5 +1,6 @@
-\ProvidesFile{ppdrs.def}[2020/06/22 definitions file for PPDRS]
+\ProvidesFile{ppdrs.def}[2020/06/22 definitions file for PRODER]
 
+\csgdef{local@progabbrev}{PRODER}
 \csgdef{local@progname}{Programa de Pós-Graduação em Desenvolvimento Regional Sustentável}
 \csgdef{local@coursename}{Desenvolvimento Regional Sustentável}
 \csgdef{local@coursearea}{Desenvolvimento Regional Sustentável}

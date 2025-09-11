@@ -1,5 +1,6 @@
 \ProvidesFile{profsaude.def}[2020/06/22 definitions file for PROFSAÚDE]
 
+\csgdef{local@progabbrev}{PROFSAÚDE}
 \csgdef{local@progname}{Programa de Mestrado Profissional em Saúde da Família}
 \csgdef{local@coursename}{Saúde da Família}
 \csgdef{local@coursearea}{Saúde da Família}

@@ -1,5 +1,6 @@
 \ProvidesFile{proffilo.def}[2020/06/22 definitions file for PROF-FILO]
 
+\csgdef{local@progabbrev}{PROF-FILO}
 \csgdef{local@progname}{Programa de P{\' o}s-gradua{\c c}{\~ a}o em Filosofia em Rede}
 \csgdef{local@coursename}{Filosofia}
 \csgdef{local@coursearea}{Filosofia}

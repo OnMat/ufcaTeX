@@ -1,5 +1,6 @@
 \ProvidesFile{ppgb.def}[2020/06/22 definitions file for PPGB]
 
+\csgdef{local@progabbrev}{PPGB}
 \csgdef{local@progname}{Programa de Pós-Graduação em Biblioteconomia}
 \csgdef{local@coursename}{Biblioteconomia}
 \csgdef{local@coursearea}{Biblioteconomia na Sociedade Contemporânea}

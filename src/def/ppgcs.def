@@ -1,5 +1,6 @@
 \ProvidesFile{ppgcs.def}[2020/06/22 definitions file for PPGCS]
 
+\csgdef{local@progabbrev}{PPGCS}
 \csgdef{local@progname}{Programa de Pós-Graduação em Ciências da Saúde}
 \csgdef{local@coursename}{Ciências da Saúde}
 \csgdef{local@coursearea}{Ciências da Saúde}
