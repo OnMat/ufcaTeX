@@ -1,5 +1,6 @@
 \ProvidesFile{profmat.def}[2020/06/22 definitions file for PROFMAT]
 
+\csgdef{local@progabbrev}{PROFMAT}
 \csgdef{local@progname}{Programa de P{\' o}s-gradua{\c c}{\~ a}o em Matem{\' a}tica em Rede Nacional}
 \csgdef{local@coursename}{Matem{\' a}tica}
 \csgdef{local@coursearea}{Matem{\' a}tica na Educa{\c c}{\~ a}o B{\' a}sica}

@@ -1,5 +1,6 @@
 \ProvidesFile{pmpgbqbm.def}[2020/06/22 definitions file for PMPGBqBM]
 
+\csgdef{local@progabbrev}{PMPGBqBM}
 \csgdef{local@progname}{Programa Multicêntrico de Pós-Graduação em Bioquímica e Biologia Molecular}
 \csgdef{local@coursename}{Bioquímica e Biologia Molecular}
 \csgdef{local@coursearea}{Bioquímica e Biologia Molecular}

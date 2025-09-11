@@ -1,5 +1,6 @@
 \ProvidesFile{ppga.def}[2020/06/22 definitions file for PPGA]
 
+\csgdef{local@progabbrev}{PPGA}
 \csgdef{local@progname}{Programa de Pós-Graduação em Administração}
 \csgdef{local@coursename}{Administração}
 \csgdef{local@coursearea}{Administração}
