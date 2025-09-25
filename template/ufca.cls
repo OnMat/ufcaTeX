@@ -29,7 +29,7 @@
 %% 
 %% Author(s): Vicente Helano
 %% 
-%% \CheckSum{1808}
+%% \CheckSum{1810}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -519,7 +519,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
       \vspace*{0.4em}
   {\noindent\small Bibliotec{\'a}ri%
   \ifthenelse{\equal{\csname UfcaCatalogCreatorGender:0\endcsname}{M}}{o}{a}: %
-  \csname UfcaCatalogCreator:0\endcsname\space(\csname UfcaCatalogCreatorCode:0\endcsname)}\par
+  \csname UfcaCatalogCreator:0\endcsname\space--\space\csname UfcaCatalogCreatorCode:0\endcsname}\par
   \end{center}\vspace*{2.5cm}}
 \newcommand\dedication[1]{
   \gdef\@dedic{#1}
