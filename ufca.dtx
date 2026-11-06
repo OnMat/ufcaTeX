@@ -1,0 +1,1594 @@
+% \iffalse meta-comment
+%
+% This is file `ufca.dtx'.
+%
+% Classe LaTeX para trabalhos academicos da Universidade Federal do
+% Cariri (UFCA), em conformidade com as normas da ABNT e com o manual
+% de normalizacao da Biblioteca da UFCA.
+%
+% Copyright (C) 2020-2026 Vicente Helano
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License version 3 as
+% published by the Free Software Foundation.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+% GNU General Public License version 3 for more details.
+%
+% You should have received a copy of the GNU General Public License
+% version 3 along with this package. If not, see
+% <http://www.gnu.org/licenses/>.
+%
+% Author(s): Vicente Helano
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\documentclass[a4paper]{ltxdoc}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazilian]{babel}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,breaklinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+% Versao e data exibidas na capa da documentacao. O \GetFileInfo nao
+% serve aqui, porque a classe nao e carregada pelo ltxdoc; mantenha
+% estes dois valores em sincronia com o \ProvidesClass da secao de
+% implementacao.
+\def\fileversion{v4.0}
+\def\filedate{2026/11/06}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{ufca.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \changes{v2.0.0}{2024/06/20}{Primeira versão funcional.}
+% \changes{v2.1.0}{2024/06/21}{Ajustes de conformidade com a ABNT.}
+% \changes{v3.0.0}{2026/07/14}{Reescrita da classe: interface em português,
+%    remoção de código morto, homogeneização das definições.}
+% \changes{v4.0.0}{2026/11/06}{Documentação reescrita do zero em formato
+%    \texttt{dtx}; fontes separados do \emph{template}.}
+% \changes{v4.0.0}{2026/11/06}{Removidas as opções \texttt{english} e
+%    \texttt{doublespacing}, e com elas \cs{tituloestrangeiro},
+%    \cs{title} e as cadeias fixas em inglês.}
+%
+% \DoNotIndex{\@ifpackageloaded,\@ifundefined,\@namedef,\@nameuse,\@tempcnta}
+% \DoNotIndex{\@tempdima,\@whilenum,\addtocontents,\addtocounter,\addtolength}
+% \DoNotIndex{\advance,\begingroup,\bfseries,\centering,\clearpage,\cleardoublepage}
+% \DoNotIndex{\csname,\def,\else,\endcsname,\endgroup,\fi,\gdef,\global,\hfill}
+% \DoNotIndex{\if,\ifdim,\ifnum,\ifx,\immediate,\itshape,\let,\newcommand}
+% \DoNotIndex{\newcounter,\newif,\newlength,\normalfont,\par,\relax,\renewcommand}
+% \DoNotIndex{\RequirePackage,\setcounter,\setlength,\settowidth,\space,\the}
+% \DoNotIndex{\vspace,\write,\z@,\p@,\@auxout,\string,\protect,\noindent}
+%
+% \title{A classe \textsf{ufca}\thanks{Este documento descreve a
+%   classe \textsf{ufca} na versão \fileversion, de \filedate.}}
+% \author{Vicente Helano\\ \texttt{vicente.sobrinho@ufca.edu.br}}
+% \date{\today}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   A classe \textsf{ufca} compõe trabalhos de conclusão de curso,
+%   dissertações e teses da Universidade Federal do Cariri segundo as
+%   normas da ABNT e o manual de normalização da Biblioteca da UFCA.
+%   O objetivo é que o autor se concentre no texto: margens,
+%   entrelinhas, numeração de páginas, sumário, listas e referências
+%   são tratados pela classe. Este documento descreve a interface de
+%   uso e, na segunda parte, a implementação comentada.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introdução}
+%
+% Escrever um trabalho acadêmico em \LaTeX{} seria simples se não
+% fosse preciso atender, simultaneamente, a um conjunto de normas da
+% ABNT e às exigências do manual de normalização da instituição. A
+% classe \textsf{ufca} existe para absorver esse trabalho.
+%
+% A classe deriva do projeto \textsf{coppe}, da UFRJ, mas foi
+% inteiramente reescrita: a interface passou a ser em português, as
+% listas e o sumário foram reformulados segundo a
+% \mbox{NBR 6027:2012}, e o modelo visual foi aferido, página a
+% página, contra o \emph{template} em Word distribuído pela
+% Biblioteca da UFCA.
+%
+% \subsection{O que a classe entrega}
+%
+% \begin{itemize}
+%   \item capa, folha de rosto e folha de aprovação construídas a
+%     partir dos dados declarados no preâmbulo;
+%   \item numeração de páginas no canto superior direito, com a
+%     contagem iniciando na folha de rosto e os números aparecendo
+%     somente a partir da introdução;
+%   \item sumário conforme a \mbox{NBR 6027:2012}, com os indicativos
+%     alinhados à esquerda e os títulos numa única coluna;
+%   \item listas de figuras, de tabelas, de abreviaturas e de
+%     símbolos, com as colunas dimensionadas automaticamente;
+%   \item referências pelo \textsf{biblatex} com o estilo
+%     \textsf{abnt};
+%   \item apêndices e anexos com rótulos e entradas de sumário
+%     próprios.
+% \end{itemize}
+%
+% \subsection{Requisitos}
+%
+% A classe exige um \LaTeX{} de 2020 ou posterior e os pacotes
+% \textsf{biblatex} (com o estilo \textsf{abnt}), \textsf{tocloft},
+% \textsf{titlesec}, \textsf{caption}, \textsf{geometry},
+% \textsf{setspace}, \textsf{etoolbox}, \textsf{xpatch},
+% \textsf{eqparbox}, \textsf{pdfpages} e \textsf{ulem}. A compilação
+% da bibliografia usa o \textsf{biber}; as listas de abreviaturas e de
+% símbolos usam o \textsf{makeindex} com o estilo \texttt{ufca.ist},
+% distribuído junto com a classe.
+%
+% \section{Licença}
+%
+% Este programa é software livre: você pode redistribuí-lo e/ou
+% modificá-lo sob os termos da Licença Pública Geral GNU, versão~3,
+% publicada pela Free Software Foundation. Ele é distribuído na
+% esperança de ser útil, mas \textsc{sem nenhuma garantia}. Veja o
+% arquivo \texttt{LICENSE.md} para o texto completo.
+%
+% \section{Primeiros passos}
+%
+% O documento principal declara a classe, os dados do trabalho e a
+% sequência das partes. O esqueleto mínimo é este:
+%
+% \begin{verbatim}
+% \documentclass{ufca}
+% \usepackage{amsmath,amssymb,amsthm}
+% \usepackage{newtxtext,newtxmath}
+% \usepackage[hidelinks]{hyperref}
+% \addbibresource{Referencias.bib}
+%
+% \begin{document}
+%   \autor{Nome Completo do Estudante}
+%   \titulo{Título do trabalho: subtítulo}
+%   \unidadeacademica{Centro de Ciências e Tecnologia}
+%   \curso{Matemática}
+%   \grau{Bacharel}{Bacharelado}
+%   \tipodetrabalho{Trabalho de Conclusão de Curso}
+%   \orientador{M}{Prof.}{Nome do Orientador}{Dr.}
+%   \avaliador{Prof.}{Nome do Avaliador}{Dr.}{UFCA}
+%   \local{Juazeiro do Norte}
+%   \data{15}{dezembro}{2026}
+%   \palavrachave{primeira palavra-chave}
+%   \keyword{first keyword}
+%
+%   \maketitle
+%   \frontmatter
+%     \begin{agradecimentos} ... \end{agradecimentos}
+%     \begin{resumo} ... \end{resumo}
+%     \begin{abstract} ... \end{abstract}
+%     \sumario
+%     \listadefiguras
+%   \mainmatter
+%     \chapter{INTRODUÇÃO}
+%     ...
+%   \printbibliography
+%   \appendix
+%     \chapter{Questionário}
+%   \annex
+%     \chapter{Lei de acesso à informação}
+% \end{document}
+% \end{verbatim}
+%
+% \subsection{Como compilar}
+%
+% Várias medidas da classe (largura dos rótulos das listas, coluna de
+% títulos do sumário, largura da caixa do número de página) são
+% medidas numa compilação e aplicadas na seguinte, pelo arquivo
+% \texttt{.aux}. Por isso, \textbf{duas ou três compilações} são
+% necessárias para o resultado estabilizar. O \texttt{latexmk} cuida
+% disso; com ele, basta
+%
+% \begin{verbatim}
+% latexmk -pdf TCC.tex
+% \end{verbatim}
+%
+% Se as listas de abreviaturas ou de símbolos forem usadas, é preciso
+% ainda processar os arquivos auxiliares com o \textsf{makeindex} e o
+% estilo \texttt{ufca.ist}; o \texttt{latexmkrc} distribuído com o
+% \emph{template} já contém essas regras.
+%
+% \section{Dados do trabalho}
+%
+% Todos os comandos desta seção são declarados antes de
+% |\maketitle|. Os dados em português têm comandos de nome português;
+% os dois campos que admitem versão estrangeira (título e
+% palavras-chave) usam os nomes em inglês.
+%
+% \DescribeMacro{\autor}
+% Recebe o nome completo do estudante, como deve aparecer na capa:
+% |\autor{Maria da Silva}|.
+%
+% \DescribeMacro{\titulo}
+% Define o título do trabalho, incluindo o subtítulo após dois-pontos:
+% |\titulo{Título do trabalho: subtítulo}|. É esse título que aparece
+% na capa, na folha de rosto, na folha de aprovação e nos metadados do
+% PDF.
+%
+% \DescribeMacro{\unidadeacademica}
+% Nome do centro ou da unidade acadêmica, por extenso.
+%
+% \DescribeMacro{\curso}
+% \DescribeMacro{\programa}
+% Use |\curso| para a graduação e |\programa| para a pós-graduação. A
+% presença de |\programa| faz a classe tratar o trabalho como de
+% pós-graduação, o que muda o texto da folha de rosto.
+%
+% \DescribeMacro{\grau}
+% Recebe dois argumentos: o título conferido e o nível do curso, nesta
+% ordem --- |\grau{Mestre}{Mestrado}|.
+%
+% \DescribeMacro{\tipodetrabalho}
+% Recebe o tipo por extenso e, no argumento opcional, o gênero
+% gramatical: |\tipodetrabalho[true]{Trabalho de Conclusão de Curso}|
+% para masculino (``apresentado''), ou sem o opcional para feminino
+% (``apresentada''), que é o padrão. O gênero concorda o texto da
+% folha de rosto.
+%
+% \DescribeMacro{\local}
+% \DescribeMacro{\data}
+% |\local| é a cidade; |\data| recebe dia, mês por extenso e ano:
+% |\data{15}{dezembro}{2026}|.
+%
+% \DescribeMacro{\orientador}
+% \DescribeMacro{\coorientador}
+% Ambos recebem quatro argumentos: gênero (|F| ou |M|), tratamento,
+% nome e titulação --- |\orientador{F}{Profa.}{Ana Souza}{Dra.}|. O
+% gênero flexiona ``Orientador''/``Orientadora''. O |\coorientador| é
+% opcional; se ausente, a linha correspondente não é composta.
+%
+% \DescribeMacro{\avaliador}
+% Pode ser chamado quantas vezes forem necessárias, uma por membro da
+% banca, na ordem em que devem aparecer. Recebe tratamento, nome,
+% titulação e instituição.
+%
+% \DescribeMacro{\palavrachave}
+% \DescribeMacro{\keyword}
+% Uma chamada por palavra-chave, na ordem desejada. |\palavrachave|
+% alimenta o resumo; |\keyword|, o \emph{abstract}. A classe compõe a
+% lista separada por ponto e vírgula e encerrada por ponto, e também
+% preenche os metadados do PDF quando o \textsf{hyperref} está
+% carregado.
+%
+% \DescribeMacro{\fichacatalografica}
+% \DescribeMacro{\declaracaodevalidacao}
+% Recebem o nome de um arquivo PDF de uma página, que é inserido no
+% lugar devido. Se não forem declarados, a classe imprime no lugar uma
+% página com as instruções para solicitar o documento.
+%
+% \section{Estrutura do documento}
+%
+% \DescribeMacro{\maketitle}
+% \DescribeMacro{\frontmatter}
+% \DescribeMacro{\mainmatter}
+% Compõem, respectivamente, a capa; a parte pré-textual (folha de
+% rosto, ficha, folha de aprovação e o que vier em seguida); e a parte
+% textual. Devem ser chamados nesta ordem.
+%
+% A numeração de páginas segue a ABNT: a contagem começa na folha de
+% rosto, mas os números só passam a ser impressos na primeira página
+% da parte textual. |\mainmatter| não reinicia o contador --- apenas
+% troca a exibição de algarismos romanos para arábicos.
+%
+% \subsection{Seções}
+%
+% A classe formata cinco níveis, com grafias distintas, idênticas no
+% texto e no sumário:
+%
+% \begin{center}
+% \begin{tabular}{lll}
+%   \toprule
+%   Nível & Comando & Grafia\\
+%   \midrule
+%   primário   & |\chapter|       & caixa alta, negrito\\
+%   secundário & |\section|       & caixa alta e baixa, negrito\\
+%   terciário  & |\subsection|    & caixa alta e baixa, normal\\
+%   quaternário& |\subsubsection| & itálico\\
+%   quinário   & |\paragraph|     & sublinhado\\
+%   \bottomrule
+% \end{tabular}
+% \end{center}
+%
+% Os títulos de capítulo devem ser digitados já em caixa alta.
+%
+% \section{Elementos pré-textuais}
+%
+% \DescribeMacro{\dedicatoria}
+% \DescribeMacro{\epigrafe}
+% |\dedicatoria| recebe o texto; |\epigrafe| recebe o texto e a
+% autoria, nesta ordem. Ambos compõem o bloco recuado à direita, sem
+% título.
+%
+% \DescribeEnv{agradecimentos}
+% \DescribeEnv{resumo}
+% \DescribeEnv{abstract}
+% Ambientes com título próprio. O |resumo| e o |abstract| acrescentam
+% automaticamente, ao final, a lista de palavras-chave declarada com
+% |\palavrachave| e |\keyword|.
+%
+% \section{Sumário e listas}
+%
+% \DescribeMacro{\sumario}
+% \DescribeMacro{\listadefiguras}
+% \DescribeMacro{\listadetabelas}
+% \DescribeMacro{\listadeabreviaturas}
+% \DescribeMacro{\listadesimbolos}
+% Compõem o sumário e as listas, cada um começando em página nova e
+% sem número de página impresso. São sinônimos em português de
+% |\tableofcontents|, |\listoffigures| e |\listoftables|.
+%
+% \DescribeMacro{\abreviatura}
+% \DescribeMacro{\simbolo}
+% Registram uma entrada nas listas de abreviaturas e de símbolos:
+% |\abreviatura{ABNT}{Associação Brasileira de Normas Técnicas}|. Para
+% que os arquivos auxiliares sejam gerados, é preciso declarar
+% |\geralistadeabreviaturas| e |\geralistadesimbolos| no preâmbulo.
+%
+% As entradas dessas duas listas não levam número de página: a página
+% ainda é gravada no arquivo bruto, porque o \textsf{makeindex}
+% precisa dela para ordenar e fundir entradas repetidas, mas é
+% descartada na composição.
+%
+% \section{Ilustrações e tabelas}
+%
+% \DescribeMacro{\legenda}
+% \DescribeMacro{\fonte}
+% |\legenda| compõe o título da ilustração ou tabela, acima do objeto;
+% |\fonte| compõe a indicação de fonte, abaixo. A fonte é obrigatória
+% pela \mbox{NBR 14724}, mesmo quando o material é de autoria própria.
+% |\source| é sinônimo de |\fonte|.
+%
+% Figuras e tabelas têm numeração contínua ao longo do trabalho, sem
+% reiniciar a cada capítulo.
+%
+% \section{Referências}
+%
+% As referências são compostas pelo \textsf{biblatex} com o estilo
+% \textsf{abnt}. Declare a base com |\addbibresource| no preâmbulo e
+% chame |\printbibliography| onde as referências devem aparecer: a
+% classe cuida do título, da entrada no sumário e do espaçamento.
+%
+% \section{Apêndices e anexos}
+%
+% \DescribeMacro{\appendix}
+% \DescribeMacro{\annex}
+% Depois de |\appendix|, cada |\chapter| passa a ser composto como
+% ``APÊNDICE A -- Título''; depois de |\annex|, como ``ANEXO A --
+% Título''. A numeração reinicia em~A em cada um dos dois, e as
+% entradas correspondentes do sumário são geradas automaticamente.
+% Apêndices são produzidos pelo autor; anexos, por terceiros.
+%
+% \section{Opções da classe}
+%
+% A classe não possui opções. Ela é sempre carregada com
+% |\documentclass{ufca}|; qualquer opção informada produz um aviso de
+% classe e é ignorada. O corpo do texto fica em 12\,pt, papel A4,
+% entrelinhas de 1,5 linha e margens de 3\,cm à esquerda e no topo,
+% 2\,cm à direita e embaixo, conforme a \mbox{NBR 14724}.
+%
+% \section{Parâmetros ajustáveis}
+%
+% Os valores a seguir reproduzem o modelo da Biblioteca da UFCA e
+% normalmente não precisam ser alterados. Quando for necessário,
+% redefina-os no preâmbulo, depois de |\documentclass|.
+%
+% \begin{center}
+% \begin{tabular}{lll}
+%   \toprule
+%   Parâmetro & Padrão & Governa\\
+%   \midrule
+%   |\espacotitulo|    & \texttt{.98\string\baselineskip} & espaço entre o título dos
+%                                                 pré-textuais e o texto\\
+%   |\referenciassep|  & \texttt{0pt}        & espaço entre as referências\\
+%   |\sumarionumsep|   & \texttt{0.35em}     & folga após o indicativo, no sumário\\
+%   |\listanumsep|     & \texttt{0.32cm}     & folga após o travessão, nas listas\\
+%   |\glossarioindent| & \texttt{1.25cm}     & coluna das definições\\
+%   |\glossariosep|    & \texttt{1em}        & separação mínima rótulo--definição\\
+%   |\pontilhadosep|   & \texttt{0pt}        & folga antes do número de página\\
+%   \bottomrule
+% \end{tabular}
+% \end{center}
+%
+% O |\espacotitulo| é um comando, e não um comprimento, para que o
+% |\baselineskip| seja avaliado no momento do uso, já com o fator de
+% espaçamento da classe aplicado. Os demais são comprimentos e se
+% ajustam com |\setlength|.
+%
+% \section{Conformidade com as normas}
+%
+% Algumas decisões da classe merecem registro, por não serem óbvias e
+% por decorrerem de leitura direta das normas.
+%
+% \paragraph{Sumário (NBR 6027:2012).} O item~5.2 determina que os
+% indicativos sejam alinhados à esquerda e que os títulos acompanhem a
+% margem do indicativo mais extenso. A classe não usa, portanto,
+% indentação progressiva por nível: mede o indicativo mais longo do
+% documento e alinha todos os títulos numa única coluna, inclusive os
+% dos elementos pós-textuais.
+%
+% \paragraph{Ilustrações (NBR 14724:2024).} O item~5.8 passou a exigir
+% que tipo, número, título, fonte e notas acompanhem as margens da
+% ilustração. A exigência é satisfazível para ilustrações que caibam
+% numa página, mas não para quadros e tabelas que se estendam por
+% várias: um objeto repartido entre páginas não possui uma largura. O
+% item~5.9, que trata de tabelas, não repete a cláusula e remete às
+% normas de apresentação tabular do IBGE, que preveem expressamente a
+% tabela que ultrapassa a página.
+%
+% \paragraph{Referências (NBR 6023:2018).} A norma pede referências em
+% espaço simples, separadas entre si por uma linha em branco. O padrão
+% da classe é compacto; para seguir a norma à risca, use
+% |\setlength{\referenciassep}{\baselineskip}|.
+%
+% \StopEventually{\PrintChanges\PrintIndex}
+%
+% \section{Implementação}
+%
+% O que segue é o código da classe. Os comentários aqui presentes são
+% suprimidos do arquivo |ufca.cls| gerado; eles existem para quem lê
+% esta documentação.
+%
+%    \begin{macrocode}
+%<*class>
+%%
+%% This is file `ufca.cls'.
+%%
+%% Classe LaTeX para trabalhos academicos (TCCs, dissertacoes e teses)
+%% da Universidade Federal do Cariri (UFCA), em conformidade com as
+%% normas ABNT (NBR 14724 e correlatas).
+%%
+%% Copyright (C) 2020-2026 Vicente Helano
+%%
+%% This program is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License version 3 as
+%% published by the Free Software Foundation.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%% GNU General Public License version 3 for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% version 3 along with this package (see COPYING file).
+%% If not, see <http://www.gnu.org/licenses/>.
+%%
+%% Author(s): Vicente Helano
+%%
+%% Organizacao deste arquivo:
+%%   1. Identificacao e classe base
+%%   2. Pacotes
+%%   3. Chaves booleanas e opcoes de classe
+%%   4. Idioma e strings localizadas
+%%   5. Estilo de pagina
+%%   6. Interface de dados do usuario
+%%   7. Estrutura do documento (frontmatter/mainmatter/backmatter)
+%%   8. Capa, folha de rosto e folha de aprovacao
+%%   9. Elementos pre-textuais
+%%  10. Sumario e listas (tocloft)
+%%  11. Legendas e fonte
+%%  12. Bibliografia
+%%  13. Abreviaturas, simbolos, glossario e indice
+%%  14. Apendices e anexos
+%%  15. Integracao com hyperref
+%%
+
+%% ------------------------------------------------------------------
+%% 1. Identificacao e classe base
+%% ------------------------------------------------------------------
+\def\fileversion{v4.0}
+\def\filedate{2026/11/06}
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesClass{ufca}[\filedate\ \fileversion\ UFCA academic monographs]
+\LoadClass[12pt,a4paper,oneside]{book}
+
+%% ------------------------------------------------------------------
+%% 2. Pacotes
+%% ------------------------------------------------------------------
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}% redundante em kernels novos; inofensivo
+\RequirePackage{setspace}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{csquotes}
+\RequirePackage[style=abnt,backend=biber]{biblatex}
+\RequirePackage{hyphenat}
+\RequirePackage[normalem]{ulem}% \uline com quebra de linha; normalem preserva \emph
+\RequirePackage{graphicx}
+\RequirePackage{tabularx}
+\RequirePackage{booktabs}
+\RequirePackage{pdfpages}
+\RequirePackage{eqparbox}
+\RequirePackage{multirow}
+\RequirePackage{etoolbox}
+\RequirePackage{xpatch}
+\RequirePackage{url}% para \url na pagina da ficha catalografica sem hyperref
+\RequirePackage[a4paper,bindingoffset=0.0cm,vcentering=true,%
+  top=3cm,bottom=2cm,left=3cm,right=2cm,headsep=2.66\baselineskip]{geometry}
+\RequirePackage[compact]{titlesec}
+\RequirePackage[titles]{tocloft}
+%% Mantidos apenas por compatibilidade com documentos existentes;
+%% a classe em si nao os utiliza mais e eles podem ser removidos
+%% numa versao futura:
+\RequirePackage{ifthen}
+\RequirePackage{lastpage}
+\RequirePackage{indentfirst}
+%% Obs.: o hyperref NAO e carregado pela classe; se desejado, deve ser
+%% carregado pelo documento. Toda a integracao e condicional.
+
+%% ------------------------------------------------------------------
+%% 3. Chaves booleanas e opcoes de classe
+%% ------------------------------------------------------------------
+%% Todas as chaves booleanas usam \newif; as que recebem valor textual
+%% (true/false) do usuario sao ajustadas via \ifstrequal (etoolbox).
+\newif\ifmaledoc         \maledocfalse        % genero gramatical do tipo de trabalho
+\newif\ifposgrad         \posgradfalse        % pos-graduacao (programa) ou graduacao (curso)
+\newif\ifcataloging@file \cataloging@filefalse% ha ficha catalografica em PDF
+\newif\ifvalidation@file \validation@filefalse% ha ficha catalografica em PDF
+
+\DeclareOption*{\ClassWarning{ufca}{Opcao desconhecida: `\CurrentOption'}}
+
+% Espacamento padrao: 1,5 linha (com fator de correcao LaTeX/Word)
+\onehalfspacing
+\setstretch{1.432}
+
+% Recuo da primeira linha de cada paragrafo (ABNT: 1,5 cm da margem)
+\setlength{\parindent}{1.5cm}
+\ProcessOptions\relax
+
+%% ------------------------------------------------------------------
+%% 4. Idioma e strings localizadas
+%% ------------------------------------------------------------------
+\RequirePackage[english,brazilian]{babel}
+\addto{\captionsenglish}{\renewcommand{\bibname}{REFERENCES}}
+
+\newcommand\listabbreviationname{Lista de Abreviaturas e Siglas}
+\newcommand\listsymbolname{Lista de S{\' i}mbolos}
+\newcommand\glossaryname{Gloss{\' a}rio}
+\newcommand\ufca@bibtitlename{Refer{\^ e}ncias}
+
+\newcommand\local@universityname{Universidade Federal do Cariri}
+\newcommand\local@advisorstring{Orientador}
+\newcommand\local@coadvisorstring{Coorientador}
+% Espaco entre o titulo dos pre-textuais (agradecimentos, resumo e
+% abstract) e o inicio do texto. Ajustavel no preambulo com, por
+% exemplo, \renewcommand{\espacotitulo}{1.432\baselineskip}.
+% E um comando, nao um comprimento, para que \baselineskip seja
+% avaliado no uso, ja com o fator de espacamento da classe.
+\newcommand\espacotitulo{.98\baselineskip}
+\newcommand\thanks@toptext{\noindent\textbf{AGRADECIMENTOS}}
+\newcommand\abstract@toptext{\noindent\textbf{RESUMO}}
+\newcommand\foreignabstract@toptext{\noindent\textbf{ABSTRACT}}
+
+%% ------------------------------------------------------------------
+%% 5. Estilo de pagina
+%% ------------------------------------------------------------------
+% Numero da pagina no canto superior direito (redefine o estilo plain)
+\renewcommand{\ps@plain}{%
+  \renewcommand{\@oddhead}{\hfil\small\thepage}%
+  \let\@evenhead\@oddhead
+  \renewcommand{\@oddfoot}{}%
+  \renewcommand{\@evenfoot}{}%
+}
+
+%% ------------------------------------------------------------------
+%% 6. Interface de dados do usuario
+%% ------------------------------------------------------------------
+%% Todos os campos sao gravados globalmente com \ufca@set{nome}{valor}
+%% e lidos como \local@... , \foreign@... ou \Ufca... .
+%% Convencao da interface: comandos em portugues definem os dados em
+%% portugues; \title e \keyword definem as versoes estrangeiras.
+\newcommand*\ufca@set[2]{\global\@namedef{#1}{#2}}
+
+\newcommand\autor[1]{%
+  \ufca@set{@authname}{#1}}
+\newcommand\titulo[1]{\ufca@set{local@title}{#1}}
+\newcommand\unidadeacademica[1]{\ufca@set{local@unitname}{#1}}
+\newcommand\local[1]{\ufca@set{local@cityname}{#1}}
+\newcommand\data[3]{%
+  \ufca@set{local@day}{#1}%
+  \ufca@set{local@month}{#2}%
+  \ufca@set{local@year}{#3}}
+\newcommand\grau[2]{%
+  \ufca@set{local@degreename}{#1}%
+  \ufca@set{local@levelname}{#2}}
+\newcommand\tipodetrabalho[2][false]{%
+  \ifstrequal{#1}{true}{\global\maledoctrue}{\global\maledocfalse}%
+  \ufca@set{local@doctype}{#2}}
+\newcommand\curso[1]{\ufca@set{local@coursename}{#1}}
+\newcommand\programa[1]{%
+  \global\posgradtrue
+  \ufca@set{local@progname}{#1}}
+\newcommand\fichacatalografica[1]{%
+  \global\cataloging@filetrue
+  \ufca@set{local@catalogingfile}{#1}}
+
+\newcommand\declaracaodevalidacao[1]{%
+  \global\validation@filetrue
+  \ufca@set{local@validationfile}{#1}}
+
+\newcommand\orientador[4]{%
+  \ifstrequal{#1}{F}%
+    {\ufca@set{local@advisorgender}{a}}%
+    {\ufca@set{local@advisorgender}{}}%
+  \ufca@set{local@advisortitle}{#2}%
+  \ufca@set{local@advisorname}{#3}%
+  \ufca@set{local@advisordegree}{#4}}
+
+\newcount\@coadvisor \@coadvisor=0
+\newcommand\coorientador[4]{%
+  \global\advance\@coadvisor by 1
+  \ifstrequal{#1}{F}%
+    {\ufca@set{local@coadvisorgender}{a}}%
+    {\ufca@set{local@coadvisorgender}{}}%
+  \ufca@set{local@coadvisortitle}{#2}%
+  \ufca@set{local@coadvisorname}{#3}%
+  \ufca@set{local@coadvisordegree}{#4}}
+
+\newcount\@examiner \@examiner=0
+\newcommand\avaliador[4]{%
+  \ufca@set{UfcaExaminerTitle:\the\@examiner}{#1}%
+  \ufca@set{UfcaExaminerName:\the\@examiner}{#2}%
+  \ufca@set{UfcaExaminerDegree:\the\@examiner}{#3}%
+  \ufca@set{UfcaExaminerAffiliation:\the\@examiner}{#4}%
+  \global\advance\@examiner by 1}
+
+\newcounter{keywords}
+\newcommand\palavrachave[1]{%
+  \ufca@set{UfcaKeyword:\the\c@keywords}{#1}%
+  \global\addtocounter{keywords}{1}}
+\newcounter{foreignkeywords}
+\newcommand\keyword[1]{%
+  \ufca@set{UfcaForeignKeyword:\the\c@foreignkeywords}{#1}%
+  \global\addtocounter{foreignkeywords}{1}}
+
+%% ------------------------------------------------------------------
+%% 7. Estrutura do documento
+%% ------------------------------------------------------------------
+\renewcommand\frontmatter{%
+  \cleardoublepage
+  \@mainmatterfalse
+  % ABNT: a contagem inicia na folha de rosto (pagina 2, apos a capa),
+  % mas os numeros nao sao impressos na parte pre-textual.
+  \pagenumbering{roman}
+  \thispagestyle{empty}
+  \setcounter{page}{2}
+  \makefrontpage
+  \clearpage
+  \pagestyle{empty}
+  \ifcataloging@file
+    \includepdf[pages=1]{\local@catalogingfile}
+  \else
+    \vspace*{\fill}
+    \noindent\rule{\textwidth}{0.5pt}\par
+    \noindent\begin{center}
+      Página reservada para ficha catalográfica.\par
+      Para solicitar a ficha catalográfica, envie seu trabalho acadêmico em PDF para:\par
+      \url{catalogacao.sibi@ufca.edu.br}\par
+    \end{center}\par
+    \noindent\rule{\textwidth}{0.5pt}\par
+  \fi
+  \clearpage
+  \makeapprovalpage
+  \clearpage
+  % Capitulos pre-textuais: titulo centralizado, negrito, caixa alta.
+  % O recuo extra acima alinha o titulo das listas e do sumario com o
+  % dos demais pre-textuais (agradecimentos, resumo), que sao compostos
+  % sem \chapter*.
+  \titlespacing*{\chapter}{1pt}{-\topskip-9.64pt}{\baselineskip+2pt}
+  \titleformat{\chapter}[block]
+    {\normalfont\bfseries\centering}
+    {\normalfont\bfseries}
+    {0pt}
+    {\MakeUppercase}}
+
+\renewcommand\mainmatter{%
+  \ufca@mainBegin
+  \cleardoublepage
+  \@mainmattertrue
+  \pagestyle{plain}
+  % A contagem continua a das pre-textuais (nao ha \pagenumbering aqui,
+  % de proposito); apenas a exibicao passa a ser em arabicos.
+  \def\thepage{\arabic{page}}%
+  \titlespacing*{\chapter}{1pt}{-1.8\topskip}{\baselineskip}
+  \titleformat{\chapter}[block]
+    {\normalfont\bfseries}
+    {\normalfont\bfseries\thechapter~}
+    {0pt}
+    {\MakeUppercase}
+  \titlespacing*{\section}{1pt}{\baselineskip}{\baselineskip}
+  \titleformat{\section}[block]
+    {\normalfont\bfseries}
+    {\normalfont\bfseries\thesection~}
+    {0pt}
+    {}
+  \titlespacing*{\subsection}{1pt}{\baselineskip}{\baselineskip}
+  \titleformat{\subsection}[block]
+    {\normalfont}
+    {\normalfont\thesubsection~}
+    {0pt}
+    {}
+  \titlespacing*{\subsubsection}{1pt}{\baselineskip}{\baselineskip}
+  \titleformat{\subsubsection}[block]
+    {\normalfont\itshape}
+    {\normalfont\itshape\thesubsubsection~}
+    {0pt}
+    {}
+  \titlespacing*{\paragraph}{1pt}{\baselineskip}{\baselineskip}
+  \titleformat{\paragraph}[block]% quinario: titulo sublinhado (NBR 14724)
+    {\normalfont}
+    {\normalfont\theparagraph~}
+    {0pt}
+    {\uline}}
+
+\renewcommand\backmatter{%
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \titlespacing*{\chapter}{1pt}{-\topskip}{\baselineskip}
+  \titleformat{\chapter}[block]
+    {\normalfont\bfseries\centering}
+    {\normalfont\bfseries}
+    {0pt}
+    {\MakeUppercase}}
+
+%% ------------------------------------------------------------------
+%% 8. Capa, folha de rosto e folha de aprovacao
+%% ------------------------------------------------------------------
+\renewcommand\maketitle{%
+  \pagenumbering{alph}% capa fora da contagem (e ancoras unicas p/ hyperref)
+  \@ifpackageloaded{hyperref}{\ufca@hypersetup}{}%
+  \begin{titlepage}
+  \noindent\begin{center}
+  \makebox[30mm][c]{\includegraphics[scale=0.6027]{ufca-logo}}\par
+  \vspace*{4.45mm}
+  \textbf{\MakeUppercase{\local@universityname}}\par
+  \textbf{\MakeUppercase{\local@unitname}}\par
+  \ifposgrad
+    \textbf{\MakeUppercase{\local@progname}}%
+  \else
+    \textbf{CURSO DE \MakeUppercase{\local@coursename}}%
+  \fi\par
+  \vspace*{7.3mm}
+  \textbf{\nohyphens{\MakeUppercase{\@authname}}}\par
+  \vspace*{58.26mm}
+  \textbf{\nohyphens{\MakeUppercase{\local@title}}}\par
+  \end{center}
+  \vspace*{\fill}
+  \begin{center}
+  \textbf{\MakeUppercase{\local@cityname}}\par
+  \textbf{\local@year}
+  \end{center}
+  \end{titlepage}
+  \global\let\maketitle\relax
+  \global\let\and\relax}
+
+% Texto de apresentacao usado na folha de rosto e na folha de aprovacao
+\newcommand\frontcover@maintext{%
+  \sloppy\nohyphens{%
+    \local@doctype\space
+    \ifposgrad de \local@levelname\space\fi
+    \ifmaledoc apresentado\else apresentada\fi\space
+    ao \ifposgrad\local@progname\else Curso de \local@coursename\fi, \local@unitname, \local@universityname, como requisito parcial para obten{\c c}{\~ a}o do grau de \local@degreename\space em \local@coursename.%
+  }\par}
+
+\newcommand\makefrontpage{%
+  \par{\centering
+  \nohyphens{\bfseries\MakeUppercase{\@authname}}\par
+  \vspace*{95.2mm}
+  \nohyphens{\bfseries\MakeUppercase{\local@title}}\par}
+  \begingroup
+  \vspace*{\baselineskip}
+  \raggedleft
+  \singlespacing
+  \begin{minipage}{80mm}
+  \frontcover@maintext\par
+  \vspace*{\baselineskip}
+  \noindent\nohyphens{%
+    \local@advisorstring\local@advisorgender:\space
+    \local@advisortitle\space\local@advisordegree\space
+    \local@advisorname.}\par
+  \ifnum\@coadvisor>0
+    \nohyphens{%
+      \local@coadvisorstring\local@coadvisorgender:\space
+      \local@coadvisortitle\space\local@coadvisordegree\space
+      \local@coadvisorname.}\par
+  \fi
+  \end{minipage}\par
+  \endgroup
+  \vspace*{\fill}
+  \begin{center}
+  \bfseries\MakeUppercase{\local@cityname}\par
+  \local@year
+  \end{center}}
+
+\newcommand\makeapprovalpage{%
+  \begingroup
+  \centering
+    {\bfseries\MakeUppercase{\@authname}}\par
+    \vspace*{\fill}
+    \sloppy\nohyphens{\bfseries\MakeUppercase{\local@title}}\par
+  \endgroup
+  \vspace*{\baselineskip}
+  \begingroup
+  \raggedleft
+  \begin{minipage}{80mm}
+  {\singlespacing
+  \frontcover@maintext}\par
+  \end{minipage}\par
+  \endgroup
+  \vspace*{1.432\baselineskip}
+  \begingroup
+    \centering
+    \noindent{\bfseries BANCA EXAMINADORA}\par
+    \count1=0
+    \@whilenum \count1<\@examiner \do {%
+      \vskip42\p@ \baselineskip12pt
+      \eqmakebox[signture@list][c]{\hrulefill}\\
+      \eqmakebox[signture@list][c]{%
+        \ \ \ \protect\csname UfcaExaminerTitle:\the\count1\endcsname\space
+        \csname UfcaExaminerDegree:\the\count1\endcsname\space
+        \csname UfcaExaminerName:\the\count1\endcsname\ \ \ }\\
+      \vskip3\p@ \baselineskip12pt
+      \eqmakebox[signture@list][c]{%
+        \ \ \ \protect\csname UfcaExaminerAffiliation:\the\count1 \endcsname\ \ \ }\\
+      \advance\count1 by 1}%
+  \endgroup\par
+  \vspace*{\baselineskip}
+  \begingroup
+  \centering
+  \noindent\bfseries\MakeUppercase{\local@cityname},
+  \local@day\ DE\
+  \MakeUppercase{\local@month}\ DE\ \local@year\par
+  \endgroup}
+
+%% ------------------------------------------------------------------
+%% 9. Elementos pre-textuais
+%% ------------------------------------------------------------------
+\newcommand\dedicatoria[1]{%
+  \cleardoublepage
+  \vspace*{\fill}
+  \begingroup
+  \raggedleft
+  \begin{minipage}{80mm}
+  #1
+  \end{minipage}\par
+  \endgroup}
+
+\newcommand\epigrafe[2]{%
+  \cleardoublepage
+  \vspace*{\fill}
+  \begingroup
+  \raggedleft
+  \begin{minipage}{80mm}
+  #1
+  \end{minipage}\par
+  \vspace*{\baselineskip}
+  #2.\par
+  \endgroup}
+
+\newenvironment{agradecimentos}{%
+  \clearpage
+  \thispagestyle{empty}
+  \noindent\begingroup
+    \centering
+    \noindent\thanks@toptext\par
+  \endgroup
+  \vspace*{\espacotitulo}}{}
+
+\newenvironment{resumo}{%
+  \clearpage
+  \thispagestyle{empty}
+  \noindent\begingroup
+    \centering
+    \noindent\abstract@toptext\par
+  \endgroup
+  \vspace*{\espacotitulo}
+  \setlength{\parindent}{0pt}}{\par
+    \vspace*{\baselineskip}
+    \begingroup
+    \addtocounter{keywords}{-1}
+    \raggedright
+    \noindent\textbf{Palavras-chave}:\
+      \count1=0
+      \nohyphens{\@whilenum \count1<\value{keywords} \do {%
+        \csname UfcaKeyword:\the\count1\endcsname;%
+        \advance\count1 by 1}}
+      \count1=\value{keywords}
+      \nohyphens{\csname UfcaKeyword:\the\count1\endcsname}.\par
+      \addtocounter{keywords}{1}
+    \endgroup}
+
+\newenvironment{abstract}{%
+  \clearpage
+  \thispagestyle{empty}
+  \noindent\begingroup
+    \centering
+    \noindent\foreignabstract@toptext\par
+  \endgroup
+  \vspace*{\espacotitulo}
+  \begin{otherlanguage}{english}
+  \setlength{\parindent}{0pt}}{\par
+    \vspace*{\baselineskip}
+    \begingroup
+    \addtocounter{foreignkeywords}{-1}
+    \raggedright
+    \noindent\textbf{Keywords}:\
+      \count1=0
+      \nohyphens{\@whilenum \count1<\value{foreignkeywords} \do {%
+        \csname UfcaForeignKeyword:\the\count1\endcsname;%
+        \advance\count1 by 1}}
+      \count1=\value{foreignkeywords}
+      \nohyphens{\csname UfcaForeignKeyword:\the\count1\endcsname}.\par
+      \addtocounter{foreignkeywords}{1}
+    \endgroup
+    \end{otherlanguage}
+  % Apos o ultimo pre-textual, os dados de titulo/autor nao sao mais usados
+  \global\let\local@title\relax}
+
+%% ------------------------------------------------------------------
+%% 10. Sumario e listas (tocloft)
+%% ------------------------------------------------------------------
+%% NOTA: com a opcao [titles] do tocloft, os titulos das listas sao
+%% compostos pelo \chapter* (via titlesec); os comandos \cft*title*
+%% do tocloft nao teriam efeito. Por isso as listas sao definidas
+%% abaixo com um unico auxiliar, que tambem remove o numero da pagina.
+\newcommand*\ufca@listof[2]{%
+  % #1 = extensao do arquivo (toc, lof, lot, loq); #2 = titulo
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \chapter*{#2}%
+  \thispagestyle{empty}%
+  \@mkboth{\MakeUppercase{#2}}{\MakeUppercase{#2}}%
+  \@starttoc{#1}%
+  \if@restonecol\twocolumn\fi}
+
+\renewcommand\tableofcontents{%
+  \begingroup
+    % Mede cada indicativo composto, para fixar a coluna de titulos
+    % (NBR 6027:2012, item 5.2) na proxima compilacao
+    \let\ufca@numberline\numberline
+    \def\numberline##1{\ufca@tocmeasure{##1}\ufca@numberline{##1}}%
+    \ufca@listof{toc}{\contentsname}%
+  \endgroup}
+\renewcommand\listoffigures{\ufca@hasLof\ufca@listof{lof}{\listfigurename}}
+\renewcommand\listoftables{\ufca@listof{lot}{\listtablename}}
+\let\sumario\tableofcontents
+\let\listadefiguras\listoffigures
+\let\listadetabelas\listoftables
+
+% ---------- Sumario: fontes por nivel ----------
+\renewcommand{\cftchapfont}{\bfseries}          % 1 INTRODUCAO
+\renewcommand{\cftchappagefont}{\normalfont}
+\renewcommand{\cftsecfont}{\bfseries}           % 2.1 negrito
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}      % 2.1.1 normal
+\renewcommand{\cftsubsubsecfont}{\itshape}      % 2.1.1.1 italico
+\renewcommand{\cftsubsubsecpagefont}{\normalfont}
+\renewcommand{\cftparafont}{\normalfont}        % quinario: sublinhado vem da propria entrada (\ufca@tocul)
+
+% Pontilhado tambem nos capitulos (por padrao eles nao tem)
+% Margem direita reservada nas entradas do sumario e das listas. O
+% padrao do LaTeX (\@tocrmarg = 2,55 em) encurta TODAS as linhas da
+% entrada para reservar espaco ao numero de pagina; o modelo da
+% biblioteca so o reserva na ultima linha, usando tabulacao. Com 0pt,
+% o texto vai ate a margem e o numero e empurrado pelo pontilhado,
+% reproduzindo a mesma quebra de linha.
+\cftsetrmarg{0pt}
+
+% Largura da caixa do numero de pagina. O padrao (1,55 em) e largo
+% demais para numeros de dois digitos, e a sobra vira um vao entre o
+% pontilhado e o numero. Aqui a caixa e medida pelo maior numero de
+% pagina do documento, mais a folga opcional \pontilhadosep.
+% A ultima pagina e transportada pelo .aux, como \ultimafigura e as
+% demais medidas da classe (usar \pageref aqui acionaria o hyperref
+% antes de ele estar pronto).
+\newlength{\ufca@pnumwd}
+\newlength{\pontilhadosep}
+\setlength{\pontilhadosep}{0pt}
+\providecommand{\ultimapagina}{999}
+\AtEndDocument{%
+  \immediate\write\@auxout{\string\gdef\string\ultimapagina{\arabic{page}}}}
+\AtBeginDocument{%
+  \settowidth{\ufca@pnumwd}{\normalfont\ultimapagina}%
+  \addtolength{\ufca@pnumwd}{\pontilhadosep}%
+  \cftsetpnumwidth{\ufca@pnumwd}}
+
+% Pontilhado denso (o padrao do tocloft, 4.5, e tres vezes mais esparso
+% que o do modelo da biblioteca)
+\renewcommand{\cftdotsep}{0}
+\renewcommand{\cftchapleader}{\normalfont\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+
+% Sem o espaco vertical extra antes de cada capitulo
+\setlength{\cftbeforechapskip}{0pt}
+
+% ---------- Sumario: alinhamento conforme NBR 6027:2012 ----------
+%% Indicativos de todos os niveis alinhados a esquerda (item 5.2, com
+%% a NBR 6024) e titulos alinhados numa unica coluna, pela margem do
+%% indicativo mais extenso, inclusive os elementos pos-textuais.
+%% A largura da coluna e medida durante a composicao do sumario e
+%% transportada pelo .aux (mesmo mecanismo das listas de figuras);
+%% os numwidths sao fixados no \AtBeginDocument adiante.
+%% Compile duas ou tres vezes ate estabilizar.
+\setlength{\cftchapindent}{0pt}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsubsecindent}{0pt}
+\setlength{\cftparaindent}{0pt}
+\newlength{\ufca@tocmaxwd}% maior indicativo visto nesta compilacao
+\newlength{\ufca@entrywd}
+% Separacao entre o indicativo mais extenso e a coluna de titulos;
+% ajustavel no preambulo com \setlength{\sumarionumsep}{...}
+\newlength{\sumarionumsep}
+\setlength{\sumarionumsep}{0.35em}% da ordem de um espaco de caractere
+\newcommand*\ufca@tocmeasure[1]{%
+  \settowidth{\ufca@entrywd}{\@cftbsnum #1\@cftasnum}%
+  \ifdim\ufca@entrywd>\ufca@tocmaxwd
+    \global\ufca@tocmaxwd=\ufca@entrywd
+  \fi}
+
+% ---------- Secoes quinarias: titulo sublinhado no sumario ----------
+%% O sublinhado nao pode vir de \cftparafont (as fontes do tocloft sao
+%% declarativas, e \uline exige argumento); em vez disso, o titulo ja
+%% entra sublinhado no .toc, envolvido pelo robusto \ufca@tocul. No
+%% texto, o sublinhado vem do \titleformat de \paragraph (secao 7),
+%% garantindo grafia identica no sumario e no texto (NBR 14724).
+\DeclareRobustCommand{\ufca@tocul}[1]{\uline{#1}}
+\AtBeginDocument{%
+  \NewCommandCopy\ufca@paragraph\paragraph
+  \RenewDocumentCommand\paragraph{s o m}{%
+    \IfBooleanTF{#1}%
+      {\ufca@paragraph*{#3}}%
+      {\IfNoValueTF{#2}%
+        {\ufca@paragraph[{\ufca@tocul{#3}}]{#3}}%
+        {\ufca@paragraph[{\ufca@tocul{#2}}]{#3}}}}%
+  % Nos bookmarks do PDF (texto puro), o sublinhado e descartado
+  \@ifpackageloaded{hyperref}{%
+    \pdfstringdefDisableCommands{%
+      \let\uline\@firstofone
+      \let\ufca@tocul\@firstofone}}{}%
+}
+
+% Profundidade: ate o nivel quinario
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+% ---------- Figuras e tabelas: numeracao continua e entradas ----------
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+% Espaçamentos globais para ilustrações e tabelas
+\setlength{\intextsep}{1.432\baselineskip}
+\setlength{\textfloatsep}{1.432\baselineskip}
+
+\renewcommand{\cftfigpresnum}{Figura\space}
+\renewcommand{\cftfigaftersnum}{\hfill\textendash\hfill}
+\renewcommand{\cftfigaftersnumb}{}
+\renewcommand{\cftfigfont}{\bfseries}
+\renewcommand{\cftfigpagefont}{\normalfont}
+\renewcommand{\cftfigleader}{\normalfont\cftdotfill{\cftdotsep}}
+\setlength{\cftfigindent}{0pt}
+
+\renewcommand{\cfttabpresnum}{Tabela\space}
+\renewcommand{\cfttabaftersnum}{\hfill\textendash\hfill}
+\renewcommand{\cfttabaftersnumb}{}
+\renewcommand{\cfttabfont}{\bfseries}
+\renewcommand{\cfttabpagefont}{\normalfont}
+\renewcommand{\cfttableader}{\normalfont\cftdotfill{\cftdotsep}}
+\setlength{\cfttabindent}{0pt}
+
+% ---------- Largura das caixas de rotulo ("Figura 99 -- ") ----------
+%% Medida com o maior numero da compilacao anterior, transportado pelo
+%% .aux; na primeira compilacao valem os padroes dos \providecommand.
+\newlength{\ufca@numwidth}
+% Folga entre o travessao do rotulo ("Figura 9 -- ") e o titulo da
+% entrada, nas listas de figuras e tabelas. O modelo da biblioteca usa
+% tabulacao; este comprimento reproduz a mesma coluna.
+\newlength{\listanumsep}
+\setlength{\listanumsep}{0.32cm}
+\newcommand*\ufca@setnumwidth[3]{%
+  % #1 = prefixo, #2 = numero modelo, #3 = comprimento de destino
+  \settowidth{\ufca@numwidth}{\bfseries #1 #2\space\textendash\space}%
+  \addtolength{\ufca@numwidth}{\listanumsep}%
+  \setlength{#3}{\ufca@numwidth}}
+\providecommand{\ultimafigura}{99}
+\providecommand{\ultimatabela}{99}
+\providecommand{\ultimoindicativo}{}% largura do maior indicativo (com unidade)
+\AtEndDocument{%
+  \immediate\write\@auxout{\string\gdef\string\ultimafigura{\thefigure}}%
+  \immediate\write\@auxout{\string\gdef\string\ultimatabela{\thetable}}%
+  \immediate\write\@auxout{\string\gdef\string\ultimoindicativo{\the\ufca@tocmaxwd}}%
+  \ifvalidation@file
+    \includepdf[pages=1]{\local@validationfile}
+  \else
+    \chapter{DECLARAÇÃO DE VALIDAÇÃO}
+    \vspace*{\fill}
+    \noindent\rule{\textwidth}{0.5pt}\par
+    \noindent\begin{center}
+      Página reservada para a Declaração de Validação.\par
+      Ela deverá ser assinada pelo(a) professor(a) orientador(a) e anexada ao trabalho, com a finalidade de atestar que o trabalho se encontra em sua versão final, em conformidade com as alterações sugeridas pela banca examinadora. O documento certifica, ainda, que o(a) estudante realizou a revisão final do conteúdo textual e da formatação, atendendo às normas acadêmicas vigentes.\par
+    \end{center}\par
+    \noindent\rule{\textwidth}{0.5pt}\par
+  \fi
+}
+\AtBeginDocument{%
+  \ufca@setnumwidth{Figura}{\ultimafigura}{\cftfignumwidth}%
+  \ufca@setnumwidth{Tabela}{\ultimatabela}{\cfttabnumwidth}%
+  % Coluna unica de titulos do sumario (NBR 6027:2012, item 5.2)
+  \ifdefempty{\ultimoindicativo}%
+    {\settowidth{\ufca@numwidth}{9.9.9.9}}% chute da primeira compilacao
+    {\setlength{\ufca@numwidth}{\ultimoindicativo}}%
+  \addtolength{\ufca@numwidth}{\sumarionumsep}% respiro entre indicativo e titulo
+  \setlength{\cftchapnumwidth}{\ufca@numwidth}%
+  \setlength{\cftsecnumwidth}{\ufca@numwidth}%
+  \setlength{\cftsubsecnumwidth}{\ufca@numwidth}%
+  \setlength{\cftsubsubsecnumwidth}{\ufca@numwidth}%
+  \setlength{\cftparanumwidth}{\ufca@numwidth}%
+}
+
+% Remove o espaco em branco que surge nas listas ao mudar de capitulo
+\patchcmd{\@chapter}%
+  {\addtocontents{lot}{\protect\addvspace{10\p@}}}{}{}{}
+\patchcmd{\@chapter}%
+  {\addtocontents{lof}{\protect\addvspace{10\p@}}}{}{}{}
+
+%% ------------------------------------------------------------------
+%% 11. Legendas e fonte
+%% ------------------------------------------------------------------
+\captionsetup{%
+  format=hang,               % linhas seguintes alinham com o inicio do titulo
+  labelsep=endash,           % "Figura 1 -- Titulo" (travessao, como nas listas)
+  font={small,singlespacing},% fonte menor e espacamento simples (padrao ABNT)
+  justification=centering,   % centralizado; use raggedright p/ alinhar a esquerda
+  singlelinecheck=true,      % legenda de uma linha so e sempre centralizada
+  skip=0.2\baselineskip      % distancia entre a figura e a legenda
+}
+
+% Legenda com ponto final no corpo e sem ponto nas listas
+\newcommand{\legenda}[1]{\caption{#1}}
+
+% Indicacao de fonte abaixo de figuras e tabelas (ABNT)
+\newcommand{\source}[1]{%
+  \par\nopagebreak\vspace*{0.2\baselineskip}%
+  {\centering\small Fonte: #1.\par}\vspace{-.4\baselineskip}} % Cancela a quebra de parágrafo extra
+\let\fonte\source
+
+%% ------------------------------------------------------------------
+%% 12. Bibliografia
+%% ------------------------------------------------------------------
+%% Rotulos gravados no .aux para uso na ficha catalografica e afins;
+%% o formato depende da presenca do hyperref, por isso a definicao
+%% e adiada para o inicio do documento.
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}{%
+    \def\ufca@bibEnd{%
+      \immediate\write\@auxout{%
+        \string\newlabel{bib:end}{{}{\arabic{page}}{}{page.\arabic{page}}{}}}}%
+    \def\ufca@bibBegin{%
+      \immediate\write\@auxout{%
+        \string\newlabel{bib:begin}{{}{\arabic{page}}{}{page.\arabic{page}}{}}}}%
+    \def\ufca@mainBegin{%
+      \immediate\write\@auxout{%
+        \string\newlabel{front:pageno}{{}{\Roman{page}}{}{page.\roman{page}}{}}}}%
+    \def\ufca@hasLof{%
+      \immediate\write\@auxout{%
+        \string\newlabel{cat:lofflag}{{}{:~il.;}{}{page.\roman{page}}{}}}}%
+  }{%
+    \def\ufca@bibEnd{%
+      \immediate\write\@auxout{%
+        \string\newlabel{bib:end}{{}{\arabic{page}}{}}}}%
+    \def\ufca@bibBegin{%
+      \immediate\write\@auxout{%
+        \string\newlabel{bib:begin}{{}{\arabic{page}}{}}}}%
+    \def\ufca@mainBegin{%
+      \immediate\write\@auxout{%
+        \string\newlabel{front:pageno}{{}{\Roman{page}}{}}}}%
+    \def\ufca@hasLof{%
+      \immediate\write\@auxout{%
+        \string\newlabel{cat:lofflag}{{}{:~il.;}{}}}}%
+  }%
+  % Injeta inicio/fim e a entrada no sumario no \printbibliography,
+  % preservando o argumento opcional do biblatex.
+  \def\ufca@printbibliography[#1]{%
+    \ufca@bibBegin
+    \addcontentsline{toc}{chapter}{\numberline{}\MakeUppercase{\ufca@bibtitlename}}%
+    \titlespacing*{\chapter}{1pt}{-1.8\topskip}{1.3\baselineskip}%
+    \blx@printbibliography[title={\MakeUppercase{\ufca@bibtitlename}},#1]%
+    \ufca@bibEnd}%
+  \xpatchcmd{\printbibliography}%
+    {{\blx@printbibliography}
+      {\blx@printbibliography[]}}%
+    {{\ufca@printbibliography}
+      {\ufca@printbibliography[]}}%
+    {}%
+    {\ClassWarning{ufca}{Nao foi possivel adaptar \string\printbibliography:
+      o titulo das referencias e a entrada no sumario podem sair fora do
+      padrao. Verifique a versao do biblatex}}%
+}
+
+% Espaco vertical entre as referencias. A NBR 6023:2018 pede que elas
+% sejam "separadas entre si por uma linha em branco de espaco simples",
+% o que corresponde a \baselineskip; o padrao aqui e compacto. Ajuste
+% no preambulo com \setlength{\referenciassep}{\baselineskip}.
+% Prefira este comprimento a \bibitemsep: o valor e aplicado no inicio
+% do documento, depois do preambulo, e sobrescreveria um \bibitemsep
+% definido la.
+\newlength{\referenciassep}
+\setlength{\referenciassep}{.6\baselineskip}
+% O valor e lido aqui, na composicao da bibliografia, e nao por um
+% gancho: o proprio biblatex executa "\setlength{\bibitemsep}{\itemsep}"
+% ao carregar biblatex.def, o que em versoes recentes ocorre depois dos
+% ganchos de inicio de documento e anularia qualquer ajuste feito la.
+% Esta redefinicao reproduz o ambiente padrao do biblatex trocando
+% apenas o \itemsep, e independe do \xpatchcmd adiante.
+\defbibenvironment{bibliography}
+  {\list{}%
+     {\setlength{\leftmargin}{\bibhang}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{\referenciassep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+% O valor e aplicado dentro de \ufca@printbibliography (secao abaixo),
+% imediatamente antes de compor a bibliografia. Nao se usa aqui
+% \AtBeginDocument porque o proprio biblatex executa
+% "\setlength{\bibitemsep}{\itemsep}" ao carregar biblatex.def, o que
+% em versoes recentes ocorre DEPOIS dos ganchos de inicio de documento
+% e anula qualquer valor posto no preambulo; nem \AtBeginBibliography,
+% que ja roda com a lista aberta, quando o \itemsep foi lido.
+
+% Ambiente classico, para documentos que nao usem o biblatex
+\setlength\bibindent{1.5em}
+\renewenvironment{thebibliography}[1]%
+     {\onehalfspacing
+      \chapter*{\MakeUppercase{\bibname}}%
+      \addcontentsline{toc}{chapter}{\numberline{}\MakeUppercase{\bibname}}%
+      \ufca@bibBegin
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\setlength{\labelwidth}{0ex}%
+            \setlength{\leftmargin}{9.0ex}%
+            \setlength{\itemindent}{-9.0ex}%
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000%
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}%
+     {\def\@noitemerr%
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \ufca@bibEnd
+      \endlist}
+
+%% ------------------------------------------------------------------
+%% 13. Abreviaturas, simbolos, glossario e indice
+%% ------------------------------------------------------------------
+\newcommand\listadeabreviaturas{%
+  \begingroup
+  \renewcommand\glossaryname{\listabbreviationname}%
+  \def\ufca@glokey{lab}%
+  \@input@{\jobname.lab}%
+  \endgroup}
+\def\geralistadeabreviaturas{%
+  \newwrite\@labfile
+  \immediate\openout\@labfile=\jobname.abx
+  \def\abreviatura{\@bsphack\begingroup
+              \@sanitize
+              \@wrlab}\typeout
+  {Writing index of abbreviations file \jobname.abx}%
+  \let\geralistadeabreviaturas\@empty}
+\@onlypreamble\geralistadeabreviaturas
+
+\newcommand\listadesimbolos{%
+  \begingroup
+  \renewcommand\glossaryname{\listsymbolname}%
+  \def\ufca@glokey{los}%
+  \@input@{\jobname.los}%
+  \endgroup}
+\def\geralistadesimbolos{%
+  \newwrite\@losfile
+  \immediate\openout\@losfile=\jobname.syx
+  \def\simbolo{\@bsphack\begingroup
+             \@sanitize
+             \@wrlos}\typeout
+  {Writing index of symbols file \jobname.syx}%
+  \let\geralistadesimbolos\@empty}
+\@onlypreamble\geralistadesimbolos
+
+% Gravadores das entradas. A pagina ainda e escrita no arquivo bruto
+% (o makeindex precisa dela para ordenar e fundir entradas repetidas),
+% mas o encapsulador \ufca@nopage a descarta na composicao: listas de
+% abreviaturas e de simbolos nao levam numero de pagina. Os
+% delimitadores correspondentes estao zerados em ufca.ist.
+% Como a pagina nao e impressa, o hyperref e irrelevante aqui e os
+% dois gravadores tem uma unica definicao.
+\newcommand*\ufca@nopage[1]{}
+\def\@wrlab#1#2{%
+  \protected@write\@labfile{}%
+    {\string\indexentry{[#1] #2|ufca@nopage}{\thepage}}%
+  \endgroup
+  \@esphack}
+\def\@wrlos#1#2{%
+  \protected@write\@losfile{}%
+    {\string\indexentry{[#1] #2|ufca@nopage}{\thepage}}%
+  \endgroup
+  \@esphack}
+
+% Coluna de rotulos medida automaticamente e POR LISTA: abreviaturas
+% (lab), simbolos (los) e glossario (glo) tem colunas independentes,
+% cada qual com a largura do seu rotulo mais extenso na compilacao
+% anterior (via .aux). O texto das definicoes comeca \glossariosep
+% depois da coluna.
+\newlength{\ufca@labwd}
+% Coluna das definicoes nas listas de abreviaturas, simbolos e no
+% glossario. O modelo da biblioteca usa uma tabulacao fixa: a definicao
+% comeca sempre a \glossarioindent da margem. Se algum rotulo for mais
+% largo que isso, a coluna cresce e passa a valer \glossariosep como
+% separacao minima entre rotulo e definicao.
+\newlength{\glossarioindent}
+\setlength{\glossarioindent}{1.25cm}
+\newlength{\glossariosep}% separacao minima rotulo-definicao
+\setlength{\glossariosep}{1em}
+\newcommand*\ufca@glokey{glo}% chave da lista corrente
+\newcommand*\ufca@setrotulo[2]{\global\@namedef{ultimorotulo:#1}{#2}}
+\newcommand*\ufca@labmeasure[1]{%
+  \ifcsundef{ufca@labmax@\ufca@glokey}%
+    {\expandafter\newlength\csname ufca@labmax@\ufca@glokey\endcsname}{}%
+  \settowidth{\ufca@labwd}{#1}%
+  \ifdim\ufca@labwd>\csname ufca@labmax@\ufca@glokey\endcsname
+    \global\csname ufca@labmax@\ufca@glokey\endcsname=\ufca@labwd
+  \fi}
+\AtEndDocument{%
+  \def\ufca@wrrotulo#1{%
+    \ifcsundef{ufca@labmax@#1}{}{%
+      \immediate\write\@auxout{\string\ufca@setrotulo{#1}%
+        {\expandafter\the\csname ufca@labmax@#1\endcsname}}}}%
+  \ufca@wrrotulo{lab}\ufca@wrrotulo{los}\ufca@wrrotulo{glo}%
+}
+
+\newenvironment{theglossary}{%
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \@mkboth{\MakeUppercase\glossaryname}%
+          {\MakeUppercase\glossaryname}%
+  \chapter*{\glossaryname}%
+  % Sem numero de pagina nos usos pre-textuais (listas de abreviaturas
+  % e de simbolos); o glossario, pos-textual, permanece numerado.
+  \if@mainmatter\else\thispagestyle{empty}\fi
+  % alinha a 1a entrada com a 1a linha das demais listas (o \topsep da
+  % \list seria absorvido pelo espaco do titulo, que e maior)
+  \vspace*{-2pt}%
+  \list{}
+  {\setlength{\listparindent}{0in}%
+   \ifcsvoid{ultimorotulo:\ufca@glokey}%
+     {\setlength{\labelwidth}{5em}}% chute da primeira compilacao
+     {\setlength{\labelwidth}{\csname ultimorotulo:\ufca@glokey\endcsname}}%
+   % coluna fixa de \glossarioindent, salvo se o rotulo nao couber
+   \setlength{\labelsep}{\glossarioindent}%
+   \addtolength{\labelsep}{-\labelwidth}%
+   \ifdim\labelsep<\glossariosep \setlength{\labelsep}{\glossariosep}\fi
+   \setlength{\leftmargin}{\labelwidth}%
+   \addtolength{\leftmargin}{\labelsep}%
+   \setlength{\itemindent}{0in}%
+   % Rotulos (siglas/simbolos) alinhados a esquerda da caixa de rotulo
+   % (o padrao do kernel, \hfil #1, os alinha a direita); de passagem,
+   % cada rotulo e medido para fixar a coluna na proxima compilacao
+   \renewcommand{\makelabel}[1]{\ufca@labmeasure{##1}##1\hfil}%
+   % Espacamento entre itens identico ao entrelinhas do texto:
+   % sem os acrescimos verticais padrao das listas
+   \setlength{\itemsep}{0pt}%
+   \setlength{\parsep}{0pt}%
+   \setlength{\topsep}{0pt}%
+   \setlength{\partopsep}{0pt}}%
+   \sloppy}%
+  {\if@restonecol\twocolumn\fi
+   \endlist}
+
+\renewenvironment{theindex}{%
+  \if@twocolumn
+    \@restonecolfalse
+  \else
+    \@restonecoltrue
+  \fi
+  \twocolumn[\@makeschapterhead{\indexname}]%
+  \@mkboth{\MakeUppercase\indexname}%
+          {\MakeUppercase\indexname}%
+  \thispagestyle{plain}\parindent\z@
+  \addcontentsline{toc}{chapter}{\numberline{}\indexname}%
+  \parskip\z@ \@plus .3\p@\relax
+  \columnseprule \z@
+  \columnsep 35\p@
+  \let\item\@idxitem}
+  {\if@restonecol\onecolumn\else\clearpage\fi}
+
+%% ------------------------------------------------------------------
+%% 14. Apendices e anexos
+%% ------------------------------------------------------------------
+\renewcommand\appendix{\par
+  \setcounter{chapter}{0}%
+  \setcounter{section}{0}%
+  \gdef\@chapapp{\appendixname}%
+  \gdef\thechapter{\@Alph\c@chapter}%
+  \titlespacing*{\chapter}{1pt}{-1.8\topskip}{\baselineskip}%
+  \titleformat{\chapter}[block]
+    {\normalfont\bfseries\centering}
+    {\normalfont\bfseries APÊNDICE~\thechapter~--~}
+    {0pt}
+    {\MakeUppercase}}
+
+\newcommand\annex{\par
+  \setcounter{chapter}{0}%
+  \setcounter{section}{0}%
+  \gdef\thechapter{\@Alph\c@chapter}%
+  % Prefixo distinto nas ancoras do hyperref, para nao colidir com as
+  % dos apendices (ambos reiniciam a contagem em "A")
+  \gdef\theHchapter{annex.\@Alph\c@chapter}%
+  \titlespacing*{\chapter}{1pt}{-1.8\topskip}{\baselineskip}%
+  \titleformat{\chapter}[block]
+    {\normalfont\bfseries\centering}
+    {\normalfont\bfseries ANEXO~\thechapter~--~}
+    {0pt}
+    {\MakeUppercase}}
+
+% Dentro de \appendix/\annex, o \chapter passa a compor o titulo com
+% o rotulo completo ("APENDICE A -- ...") e a registrar a entrada no
+% sumario manualmente. A troca e adiada para o inicio do documento
+% para capturar a versao final de \chapter.
+\newcommand\appendix@chapter[1]{%
+  \refstepcounter{chapter}%
+  \def\app@ct{APÊNDICE \@Alph\c@chapter\space--\space#1}%
+  \orig@chapter*{\app@ct}%
+  \markboth{\MakeUppercase{\app@ct}}{\MakeUppercase{\app@ct}}%
+  \addcontentsline{toc}{chapter}{\numberline{}\app@ct}}
+\newcommand\annex@chapter[1]{%
+  \refstepcounter{chapter}%
+  \def\app@ct{ANEXO \@Alph\c@chapter\space--\space#1}%
+  \orig@chapter*{\app@ct}%
+  \markboth{\MakeUppercase{\app@ct}}{\MakeUppercase{\app@ct}}%
+  \addcontentsline{toc}{chapter}{\numberline{}\app@ct}}
+\AtBeginDocument{%
+  \let\orig@chapter\chapter
+  \g@addto@macro\appendix{\let\chapter\appendix@chapter}%
+  \g@addto@macro\annex{\let\chapter\annex@chapter}%
+}
+
+%% ------------------------------------------------------------------
+%% 15. Integracao com hyperref
+%% ------------------------------------------------------------------
+\newcommand\ufca@hypersetup{%
+\begingroup
+  % Monta a lista de palavras-chave separadas por "; " em \toks@
+  \toks@={}%
+  \count@=0 %
+  \@whilenum\count@<\value{keywords}\do{%
+    \ifcase\count@ % primeira palavra-chave, sem separador
+      \toks@=\expandafter{\csname UfcaKeyword:\the\count@\endcsname}%
+    \else
+      \toks@=\expandafter\expandafter\expandafter{%
+        \expandafter\the\expandafter\toks@
+        \expandafter;\expandafter\space
+        \csname UfcaKeyword:\the\count@\endcsname
+      }%
+    \fi
+    \advance\count@ by 1%
+  }%
+  \edef\x{\endgroup
+    \noexpand\hypersetup{%
+      pdfkeywords={\the\toks@}%
+    }%
+  }%
+\x
+\hypersetup{%
+  pdfauthor={\@authname},
+  pdftitle={\local@title},
+  pdfsubject={\local@doctype\ de \local@levelname},
+  pdfcreator={LaTeX with ufca class},
+  breaklinks={true},
+  raiselinks={true},
+  pageanchor={true},
+}}
+
+%%
+%% End of file `ufca.cls'.
+%</class>
+%    \end{macrocode}
+%
+% \section{O estilo \texttt{ufca.ist}}
+%
+% Estilo do \textsf{makeindex} usado para compor as listas de
+% abreviaturas e de símbolos. Os delimitadores de página estão
+% zerados: quem descarta o número é o encapsulador
+% |\ufca@nopage|, definido na classe.
+%
+%    \begin{macrocode}
+%<*glossary>
+%%
+%% This is file `ufca.ist',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% ufca.dtx  (with options: `glossary')
+%% 
+%% This is the makeindex style for creating ordered glossaries
+%% when using the `ufca' document class.
+%% 
+%% Copyright (C) 2020 Vicente Helano
+%% 
+%% This program is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License version 3 as
+%% published by the Free Software Foundation.
+%% 
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%% GNU General Public License version 3 for more details.
+%% 
+%% You should have received a copy of the GNU General Public License
+%% version 3 along with this package (see COPYING file).
+%% If not, see <http://www.gnu.org/licenses/>.
+%% 
+%% Author(s): Vicente Helano
+%% 
+%% \CheckSum{1757}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+actual '='
+quote '!'
+level '>'
+%% Sem numero de pagina nas entradas: o separador desaparece e a
+%% pagina em si e engolida pelo encapsulador \ufca@nopage (ufca.cls).
+delim_0   ""
+delim_n   ""
+lethead_flag  0
+headings_flag 0
+preamble
+"\n\\begin{theglossary}\n  \\makeatletter"
+postamble
+"\n  \\end{theglossary}\n"
+%% 
+%%
+%% End of file `ufca.ist'.
+%</glossary>
+%    \end{macrocode}
+%
+% \Finale
+\endinput

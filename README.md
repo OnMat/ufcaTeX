@@ -1,98 +1,82 @@
-# ufcaTeX
+# ufca — LaTeX class for academic works at the Federal University of Cariri
 
-This project provides a LaTeX document class suitable for writing academic
-dissertations and thesis according to the formatting rules established at
-Universidade Federal do Cariri (UFCA).
+Version: 3.0 (2026-11-06)
+Author: Vicente Helano <vicente.sobrinho@ufca.edu.br>
+License: GNU General Public License, version 3 (see `LICENSE.md`)
 
-The 'ufca' class contains a minimalist set of macro commands which allows its
-users to create the required textual elements following the UFCA guidelines.
-Among these elements, there are a front cover, a title page, cataloging
-details, native and foreign languages abstracts, table of contents, and list of
-bibliographic references.
+## Abstract (English)
 
-Although it is tied to the UFCA guidelines, it can be easily ported to other
-institutions.
+The `ufca` class typesets undergraduate final projects, master's dissertations
+and doctoral theses of the Universidade Federal do Cariri (UFCA), Brazil,
+following the standards of the Brazilian Association of Technical Standards
+(ABNT) and the normalisation manual of the UFCA Library. It builds the cover,
+title page and approval page from data declared in the preamble; numbers pages
+as required by ABNT; formats the table of contents according to NBR 6027:2012;
+produces lists of figures, tables, abbreviations and symbols with automatically
+measured columns; and handles references through `biblatex` with the `abnt`
+style. The documentation is written in Brazilian Portuguese, the language of
+its intended users.
 
-
-## How Much
-
-> This program is free software; you can redistribute it and/or modify
-> it under the terms of the GNU General Public License version 3 as
-> published by the Free Software Foundation.
-
-
-## Content
-
-The development of this class follows the Comprehensive TeX Archive Network
-(CTAN) standards. It is basically composed by an installation file ('ufca.ins')
-and the main source file ('ufca.dtx'). The full sources contain:
-
-  1. README.md: describe the UFCATeX package.
-  1. LICENSE.md: full text of the GNU General Policy License version 3.
-  5. ufca.dtx: main source file; contains the documentation, a sample
-     thesis and a Makeindex style.
-  2. Makefile: used to extract the ufca class and build the
-     documentation and a sample thesis.
-  7. ufca.ins: used to strip out the ufca document class from `ufca.dtx'.
-  8. ufca-logo.[eps,pdf]: images included in the front cover.
-  9. template (directory): a working template to start with.
-
-## Available courses
-
-At this moment, ufcaTeX supports the following graduate courses:
-* PMPGBqBM: Programa Multicêntrico de Pós-Graduação em Bioquímica e Biologia Molecular
-* PPGA: Programa de Pós-Graduação em Administração
-* PPGB: Programa de Pós-Graduação em Biblioteconomia
-* PPGCS: Programa de Pós-Graduação em Ciências da Saúde
-* PPDRS (Proder): Programa de Pós-Graduação em Desenvolvimento Regional Sustentável
-* PROFFILO: Programa de Pós-Graduação em Filosofia em Rede
-* PROFMAT: Programa de Pós-Graduação em Matemática em Rede Nacional
-* PROFSAUDE: Programa de Mestrado Profissional em Saúde da Família
-
-## A word on bibliography
-
-As of version 2.0, ufcaTeX no longer distributes BibTeX styles. We strongly
-recommend managing your references with BibLaTeX + biber, as the ABNT rules
-are already implemented therein.
-
-## Installing
-
-If you have some experience with LaTeX classes and packages, you won't have any
-difficulty when installing UFCATeX. It should be installed as any other LaTeX
-package you have ever used. So, you can save your time skipping this section.
-
-The impatient user should directly dive into the template directory.
-
-For the enthusiastic newbies, we give here succinct instructions for installing
-the UFCATeX bundle.
-
-There exist two possible ways of obtaining UFCATeX. You can download a release
-or the sources. Each of these has its own installation method. We describe both
-in the following sections.
-
-### From releases
-
-Suppose TEXMF is a variable which stores the path of your local LaTeX tree.
-Then you should copy the files ufca.cls and ufca.ist to $TEXMF/tex/latex/ufca
-and $TEXMF/makeindex/ufca, respectively. The image files ufca-logo.eps and
-ufca-logo.pdf go into the same directory as ufca.cls. In the end, you have to
-type 'texhash' to update your LaTeX tree and to make UFCATeX visible to your
-LaTeX compiler.
-
-### From sources
-
-For installing from sources, type:
+## Installation
 
 ```
-  latex ufca.ins
+luatex ufca.ins
 ```
 
-and you will get all the files you need. They are all stripped out from
-ufca.dtx. Now, you should follow the instructions in the 'From releases'
-section.
+This generates `ufca.cls` and `ufca.ist`. Move both to a directory searched by
+TeX, or to the folder of your document. The documentation is rebuilt with
 
+```
+pdflatex ufca.dtx
+```
 
-## Help & Support
+LuaTeX is recommended for the `.ins` step because it preserves the accented
+characters of the class's fixed strings; `tex` and `pdftex` write them in the
+`^^xx` notation, which is equivalent but unreadable.
 
-Please, send any comments, suggestions and questions to our
-[Discussions](https://github.com/vicentehelano/ufcaTeX/discussions).
+## Contents
+
+| File | Description |
+|---|---|
+| `ufca.dtx` | class source and documentation |
+| `ufca.ins` | docstrip script |
+| `ufca.pdf` | documentation |
+| `template/` | ready-to-use document skeleton |
+| `LICENSE.md` | GNU GPL version 3 |
+
+## Requirements
+
+LaTeX 2020 or later, `biber`, and the packages `biblatex` (with the `abnt`
+style), `tocloft`, `titlesec`, `caption`, `geometry`, `setspace`, `etoolbox`,
+`xpatch`, `eqparbox`, `pdfpages`, `ulem` and `newtx`.
+
+---
+
+## Resumo (português)
+
+A classe `ufca` compõe trabalhos de conclusão de curso, dissertações e teses da
+Universidade Federal do Cariri segundo as normas da ABNT e o manual de
+normalização da Biblioteca da UFCA. O objetivo é que o autor se concentre no
+texto: margens, entrelinhas, numeração de páginas, sumário, listas e
+referências são tratados pela classe.
+
+A documentação completa da interface — todos os comandos, os parâmetros
+ajustáveis e as decisões de conformidade com as normas — está em `ufca.pdf`.
+
+### Para escrever um trabalho
+
+Gere a classe com `luatex ufca.ins`, copie `ufca.cls` e `ufca.ist` para a pasta
+`template/` (ou instale-os na sua árvore TeX) e compile:
+
+```
+cd template
+latexmk -pdf TCC.tex
+```
+
+São necessárias duas ou três passadas: várias medidas da classe são tomadas
+numa compilação e aplicadas na seguinte, através do arquivo `.aux`. O `latexmk`
+cuida disso, inclusive das chamadas ao `biber` e ao `makeindex`.
+
+### Para alterar a classe
+
+Edite `ufca.dtx` — nunca o `ufca.cls` gerado — e regenere com `luatex ufca.ins`.

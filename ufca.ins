@@ -1,0 +1,87 @@
+%
+% This is file `ufca.ins'.
+%
+% Roda o docstrip sobre `ufca.dtx' e gera a classe `ufca.cls' e o
+% estilo de makeindex `ufca.ist'.
+%
+% Gere com LuaTeX, para que os caracteres acentuados dos textos fixos
+% da classe sejam preservados:
+%
+%     luatex ufca.ins
+%
+% (Com `tex' ou `pdftex' a geracao tambem funciona, mas os acentos
+% saem escritos na notacao ^^xx, ilegivel embora equivalente.)
+%
+% Copyright (C) 2020-2026 Vicente Helano
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License version 3 as
+% published by the Free Software Foundation.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+% GNU General Public License version 3 for more details.
+%
+% You should have received a copy of the GNU General Public License
+% version 3 along with this package. If not, see
+% <http://www.gnu.org/licenses/>.
+%
+% Author(s): Vicente Helano
+%
+
+\input docstrip
+
+\keepsilent
+\askforoverwritefalse
+
+\preamble
+
+Classe LaTeX para trabalhos academicos (TCCs, dissertacoes e teses) da
+Universidade Federal do Cariri (UFCA), em conformidade com as normas
+da ABNT e com o manual de normalizacao da Biblioteca da UFCA.
+
+Este arquivo foi gerado a partir de ufca.dtx; nao o edite
+diretamente. Para alterar a classe, edite ufca.dtx e regenere com
+
+    luatex ufca.ins
+
+Copyright (C) 2020-2026 Vicente Helano
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 3 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License version 3 for more details.
+
+You should have received a copy of the GNU General Public License
+version 3 along with this package. If not, see
+<http://www.gnu.org/licenses/>.
+
+Author(s): Vicente Helano
+
+\endpreamble
+
+\generate{%
+  \file{ufca.cls}{\from{ufca.dtx}{class}}%
+  \file{ufca.ist}{\from{ufca.dtx}{glossary}}%
+}
+
+\obeyspaces
+\Msg{*************************************************************}
+\Msg{*                                                           *}
+\Msg{* Para concluir a instalacao, mova os arquivos gerados       *}
+\Msg{*                                                           *}
+\Msg{*     ufca.cls  ufca.ist                                    *}
+\Msg{*                                                           *}
+\Msg{* para um diretorio lido pelo TeX, ou para a pasta do seu   *}
+\Msg{* trabalho. A documentacao se obtem com                     *}
+\Msg{*                                                           *}
+\Msg{*     pdflatex ufca.dtx                                     *}
+\Msg{*                                                           *}
+\Msg{*************************************************************}
+
+\endbatchfile

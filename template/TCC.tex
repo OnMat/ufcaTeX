@@ -1,0 +1,76 @@
+\documentclass{ufca}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{mdwlist}
+\usepackage{float}
+\usepackage{xcolor}
+
+\addbibresource{Referencias.bib}
+
+\input{Configuracoes}
+
+\geralistadesimbolos
+\geralistadeabreviaturas
+
+\begin{document}
+  \titulo{Título do Trabalho: Subtítulo}
+  \autor{Nome Completo do(a) Aluno(a)}
+  \orientador{M}{Prof.}{Nome do Orientador}{Dr.}
+  \coorientador{F}{Profa.}{Nome da Coorientadora}{Dra.}
+
+  \avaliador{Prof.}{Nome do Primeiro Avaliador}{Dr.}{Universidade Federal do Cariri (UFCA)}
+  \avaliador{Profa.}{Nome da Segunda Avaliadora}{Dra.}{Universidade Federal do Cariri (UFCA)}
+  \avaliador{Profa.}{Nome da Terceira Avaliadora}{Dra.}{Nome da Instituição (SIGLA)}
+  \avaliador{Prof.}{Nome do Quarto Avaliador}{Dr.}{Nome da Instituição (SIGLA)}
+
+  \curso{Nome do Curso}
+  %\programa{Nome do Programa} % somente para pós-graduação
+  \unidadeacademica{Nome do Centro}
+  \grau{Bacharel}{Bacharelado}
+  \tipodetrabalho[true]{Tipo de Trabalho (Trabalho de Conclusão de Curso, Dissertação ou Tese)} % para dissertação ou tese, remover o parâmetro opcional 'true'
+  \local{Cidade}
+  \data{DIA}{MÊS}{ANO} % ano com quatro dígitos
+  %\fichacatalografica{ficha.pdf}
+
+  \palavrachave{cras lobortis}
+  \palavrachave{penatibus}
+  \palavrachave{curabitur}
+  \palavrachave{elementum quam}
+    
+  \keyword{pellentesque}
+  \keyword{mauris ullamcorper}
+  \keyword{scelerisque}
+  \keyword{vehicula varius}
+  
+  \maketitle
+
+  \frontmatter
+  \include{Dedicatoria}
+  \include{Agradecimentos}
+  \include{Epigrafe}
+  \include{Resumo}
+  \include{Abstract}
+  
+  \listadefiguras
+  \listadetabelas
+  \listadeabreviaturas
+  \listadesimbolos
+  
+  \sumario
+
+  \mainmatter
+  \include{Capitulo1}
+  \include{Capitulo2}
+  \include{Capitulo3}
+  \include{Capitulo4}
+   
+  \backmatter
+  \printbibliography
+  \appendix
+  \include{ApendiceA}
+  \annex
+  \include{AnexoA}
+  %\declaracaodevalidacao{validacao.pdf} % este comando deve vir por último, nos anexos
+\end{document}
