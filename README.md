@@ -1,11 +1,5 @@
 # ufca — LaTeX class for academic works at the Federal University of Cariri
 
-Version: 3.0 (2026-11-06)
-Author: Vicente Helano <vicente.sobrinho@ufca.edu.br>
-License: GNU General Public License, version 3 (see `LICENSE.md`)
-
-## Abstract (English)
-
 The `ufca` class typesets undergraduate final projects, master's dissertations
 and doctoral theses of the Universidade Federal do Cariri (UFCA), Brazil,
 following the standards of the Brazilian Association of Technical Standards
@@ -52,31 +46,20 @@ style), `tocloft`, `titlesec`, `caption`, `geometry`, `setspace`, `etoolbox`,
 
 ---
 
-## Resumo (português)
+### How to use
 
-A classe `ufca` compõe trabalhos de conclusão de curso, dissertações e teses da
-Universidade Federal do Cariri segundo as normas da ABNT e o manual de
-normalização da Biblioteca da UFCA. O objetivo é que o autor se concentre no
-texto: margens, entrelinhas, numeração de páginas, sumário, listas e
-referências são tratados pela classe.
-
-A documentação completa da interface — todos os comandos, os parâmetros
-ajustáveis e as decisões de conformidade com as normas — está em `ufca.pdf`.
-
-### Para escrever um trabalho
-
-Gere a classe com `luatex ufca.ins`, copie `ufca.cls` e `ufca.ist` para a pasta
-`template/` (ou instale-os na sua árvore TeX) e compile:
+Generate the class with `luatex ufca.ins`, copy `ufca.cls` and `ufca.ist` to the
+`template/` folder (or install them in your TeX tree), and compile:
 
 ```
 cd template
 latexmk -pdf TCC.tex
 ```
 
-São necessárias duas ou três passadas: várias medidas da classe são tomadas
-numa compilação e aplicadas na seguinte, através do arquivo `.aux`. O `latexmk`
-cuida disso, inclusive das chamadas ao `biber` e ao `makeindex`.
+Two or three passes are needed: several of the class's measurements are taken
+in one run and applied in the next, via the `.aux` file. `latexmk` takes care
+of this, including the calls to `biber` and `makeindex`.
 
 ### Para alterar a classe
 
-Edite `ufca.dtx` — nunca o `ufca.cls` gerado — e regenere com `luatex ufca.ins`.
+Edit `ufca.dtx` — never the stripped `ufca.cls` — and regenerate it with `luatex ufca.ins`.
