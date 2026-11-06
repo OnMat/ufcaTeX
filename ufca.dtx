@@ -37,6 +37,7 @@
 % serve aqui, porque a classe nao e carregada pelo ltxdoc; mantenha
 % estes dois valores em sincronia com o \ProvidesClass da secao de
 % implementacao.
+\def\filename{ufca.dtx}
 \def\fileversion{v4.0}
 \def\filedate{2026/11/06}
 \EnableCrossrefs
@@ -48,11 +49,11 @@
 %</driver>
 % \fi
 %
-% \CheckSum{0}
+% \CheckSum{1828}
 %
 % \changes{v2.0.0}{2024/06/20}{Primeira versão funcional.}
 % \changes{v2.1.0}{2024/06/21}{Ajustes de conformidade com a ABNT.}
-% \changes{v3.0.0}{2026/07/14}{Reescrita da classe: interface em português,
+% \changes{v4.0.0}{2026/07/14}{Reescrita da classe: interface em português,
 %    remoção de código morto, homogeneização das definições.}
 % \changes{v4.0.0}{2026/11/06}{Documentação reescrita do zero em formato
 %    \texttt{dtx}; fontes separados do \emph{template}.}
@@ -77,7 +78,7 @@
 % \maketitle
 %
 % \begin{abstract}
-%   A classe \textsf{ufca} compõe trabalhos de conclusão de curso,
+%   A classe \textsf{ufca} formata trabalhos de conclusão de curso,
 %   dissertações e teses da Universidade Federal do Cariri segundo as
 %   normas da ABNT e o manual de normalização da Biblioteca da UFCA.
 %   O objetivo é que o autor se concentre no texto: margens,
@@ -148,7 +149,7 @@
 % \documentclass{ufca}
 % \usepackage{amsmath,amssymb,amsthm}
 % \usepackage{newtxtext,newtxmath}
-% \usepackage[hidelinks]{hyperref}
+% \usepackage{hyperref}
 % \addbibresource{Referencias.bib}
 %
 % \begin{document}
@@ -157,29 +158,31 @@
 %   \unidadeacademica{Centro de Ciências e Tecnologia}
 %   \curso{Matemática}
 %   \grau{Bacharel}{Bacharelado}
-%   \tipodetrabalho{Trabalho de Conclusão de Curso}
+%   \tipodetrabalho[true]{Trabalho de Conclusão de Curso}
 %   \orientador{M}{Prof.}{Nome do Orientador}{Dr.}
 %   \avaliador{Prof.}{Nome do Avaliador}{Dr.}{UFCA}
 %   \local{Juazeiro do Norte}
 %   \data{15}{dezembro}{2026}
+%   \fichacatalografica{ficha.pdf}
 %   \palavrachave{primeira palavra-chave}
 %   \keyword{first keyword}
 %
 %   \maketitle
 %   \frontmatter
-%     \begin{agradecimentos} ... \end{agradecimentos}
-%     \begin{resumo} ... \end{resumo}
-%     \begin{abstract} ... \end{abstract}
-%     \sumario
-%     \listadefiguras
+%   \begin{agradecimentos} ... \end{agradecimentos}
+%   \begin{resumo} ... \end{resumo}
+%   \begin{abstract} ... \end{abstract}
+%   \sumario
+%   \listadefiguras
 %   \mainmatter
-%     \chapter{INTRODUÇÃO}
+%   \chapter{INTRODUÇÃO}
 %     ...
 %   \printbibliography
 %   \appendix
-%     \chapter{Questionário}
+%   \chapter{Questionário}
 %   \annex
-%     \chapter{Lei de acesso à informação}
+%   \chapter{Lei de acesso à informação}
+%   \declaracaodevalidacao{validacao.pdf}
 % \end{document}
 % \end{verbatim}
 %
@@ -187,7 +190,7 @@
 %
 % Várias medidas da classe (largura dos rótulos das listas, coluna de
 % títulos do sumário, largura da caixa do número de página) são
-% medidas numa compilação e aplicadas na seguinte, pelo arquivo
+% tomadas numa compilação e aplicadas na seguinte, pelo arquivo
 % \texttt{.aux}. Por isso, \textbf{duas ou três compilações} são
 % necessárias para o resultado estabilizar. O \texttt{latexmk} cuida
 % disso; com ele, basta
@@ -205,8 +208,8 @@
 %
 % Todos os comandos desta seção são declarados antes de
 % |\maketitle|. Os dados em português têm comandos de nome português;
-% os dois campos que admitem versão estrangeira (título e
-% palavras-chave) usam os nomes em inglês.
+% o único campo que admite versão estrangeira (palavras-chave)
+% usa o nome em inglês.
 %
 % \DescribeMacro{\autor}
 % Recebe o nome completo do estudante, como deve aparecer na capa:
@@ -223,9 +226,9 @@
 %
 % \DescribeMacro{\curso}
 % \DescribeMacro{\programa}
-% Use |\curso| para a graduação e |\programa| para a pós-graduação. A
-% presença de |\programa| faz a classe tratar o trabalho como de
-% pós-graduação, o que muda o texto da folha de rosto.
+% Use |\curso| para a graduação. A presença de |\programa| faz a
+% classe tratar o trabalho como de pós-graduação, o que muda o
+% texto da folha de rosto.
 %
 % \DescribeMacro{\grau}
 % Recebe dois argumentos: o título conferido e o nível do curso, nesta
@@ -289,6 +292,7 @@
 % texto e no sumário:
 %
 % \begin{center}
+% \small
 % \begin{tabular}{lll}
 %   \toprule
 %   Nível & Comando & Grafia\\
@@ -421,8 +425,8 @@
 %
 % \paragraph{Ilustrações (NBR 14724:2024).} O item~5.8 passou a exigir
 % que tipo, número, título, fonte e notas acompanhem as margens da
-% ilustração. A exigência é satisfazível para ilustrações que caibam
-% numa página, mas não para quadros e tabelas que se estendam por
+% ilustração. A exigência poderia ser satisfeita para ilustrações que
+% caibam numa página, mas não para tabelas que se estendam por
 % várias: um objeto repartido entre páginas não possui uma largura. O
 % item~5.9, que trata de tabelas, não repete a cláusula e remete às
 % normas de apresentação tabular do IBGE, que preveem expressamente a
