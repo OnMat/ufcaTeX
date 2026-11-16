@@ -8,6 +8,12 @@ In interdum eros vitae tincidunt dignissim. Vivamus venenatis, urna ut sagittis 
   \legenda{Sed sodales, quam non rhoncus ultrices, metus odio mollis ante, ac ultricies libero nulla nec justo}
   \label{tab:valores}
   \centering
+  % Corpo 11 e entrelinhas simples no conteúdo da tabela; a legenda
+  % acima e a fonte abaixo mantêm os formatos da classe.
+  \setstretch{1}\small
+  % 3 pt antes do fio superior e antes do fio inferior (booktabs)
+  \setlength{\abovetopsep}{3pt}
+  \setlength{\aboverulesep}{3pt}
   \begin{tabular}{lrrr}
     \toprule
      Imperdiet         & Aculis  & Maecenas e & Phasellus \\
