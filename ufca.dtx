@@ -38,8 +38,8 @@
 % estes dois valores em sincronia com o \ProvidesClass da secao de
 % implementacao.
 \def\filename{ufca.dtx}
-\def\fileversion{v4.0}
-\def\filedate{2026/11/06}
+\def\fileversion{v3.1}
+\def\filedate{2026/11/16}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -49,7 +49,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1828}
+% \CheckSum{1847}
 %
 % \changes{v2.0.0}{2024/06/20}{Primeira versão funcional.}
 % \changes{v2.1.0}{2024/06/21}{Ajustes de conformidade com a ABNT.}
@@ -60,6 +60,10 @@
 % \changes{v3.0.0}{2026/11/06}{Removidas as opções \texttt{english} e
 %    \texttt{doublespacing}, e com elas \cs{tituloestrangeiro},
 %    \cs{title} e as cadeias fixas em inglês.}
+% \changes{v3.1.0}{2026/11/16}{Corpos tipográficos conforme o manual da
+%    Biblioteca: título de figuras e tabelas em 12 negrito com
+%    entrelinhas de 1,5; indicação de fonte em 10 com entrelinhas
+%    simples. Novos comandos \cs{formatolegenda} e \cs{formatofonte}.}
 %
 % \DoNotIndex{\@ifpackageloaded,\@ifundefined,\@namedef,\@nameuse,\@tempcnta}
 % \DoNotIndex{\@tempdima,\@whilenum,\addtocontents,\addtocounter,\addtolength}
@@ -358,6 +362,25 @@
 % Figuras e tabelas têm numeração contínua ao longo do trabalho, sem
 % reiniciar a cada capítulo.
 %
+% \DescribeMacro{\formatolegenda}
+% \DescribeMacro{\formatofonte}
+% Os corpos tipográficos seguem o manual de normalização da
+% Biblioteca: o título fica em corpo~12, negrito, com entrelinhas
+% de~1,5 (|\formatolegenda|); a indicação de fonte, em corpo~10 com
+% entrelinhas simples (|\formatofonte|). A |\legenda| e a |\fonte|
+% aplicam esses formatos por conta própria, inclusive fora de um
+% \emph{float} --- num \textsf{longtable}, por exemplo.
+%
+% O conteúdo da figura ou da tabela em si não é alterado pela classe:
+% herda o corpo~12 do texto. Para reduzi-lo, declare o tamanho dentro
+% do ambiente, como em qualquer documento \LaTeX{}.
+%
+% Para alterar os formatos, redefina-os no preâmbulo:
+%
+% \begin{verbatim}
+% \renewcommand{\formatofonte}{\setstretch{1}\small}
+% \end{verbatim}
+%
 % \section{Referências}
 %
 % As referências são compostas pelo \textsf{biblatex} com o estilo
@@ -402,14 +425,17 @@
 %   |\glossarioindent| & \texttt{1.25cm}     & coluna das definições\\
 %   |\glossariosep|    & \texttt{1em}        & separação mínima rótulo--definição\\
 %   |\pontilhadosep|   & \texttt{0pt}        & folga antes do número de página\\
+%   |\formatolegenda|  & 12, negrito, 1,5    & título de figuras e tabelas\\
+%   |\formatofonte|    & 10, simples         & indicação de fonte\\
 %   \bottomrule
 % \end{tabular}
 % \end{center}
 %
-% O |\espacotitulo| é um comando, e não um comprimento, para que o
-% |\baselineskip| seja avaliado no momento do uso, já com o fator de
-% espaçamento da classe aplicado. Os demais são comprimentos e se
-% ajustam com |\setlength|.
+% O |\espacotitulo|, o |\formatolegenda| e o |\formatofonte| são
+% comandos, e não comprimentos: assim o |\baselineskip| e o corpo
+% tipográfico são avaliados no momento do uso, já com o fator de
+% espaçamento da classe aplicado. Redefina-os com |\renewcommand|. Os
+% demais são comprimentos e se ajustam com |\setlength|.
 %
 % \section{Conformidade com as normas}
 %
@@ -492,8 +518,8 @@
 %% ------------------------------------------------------------------
 %% 1. Identificacao e classe base
 %% ------------------------------------------------------------------
-\def\fileversion{v4.0}
-\def\filedate{2026/11/06}
+\def\fileversion{v3.1}
+\def\filedate{2026/11/16}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{ufca}[\filedate\ \fileversion\ UFCA academic monographs]
 \LoadClass[12pt,a4paper,oneside]{book}
@@ -544,9 +570,12 @@
 
 \DeclareOption*{\ClassWarning{ufca}{Opcao desconhecida: `\CurrentOption'}}
 
-% Espacamento padrao: 1,5 linha (com fator de correcao LaTeX/Word)
+% Espacamento padrao: 1,5 linha (com fator de correcao LaTeX/Word).
+% O fator e nomeado porque e reaproveitado na legenda de figuras e
+% tabelas, que tambem leva entrelinhas de 1,5.
+\newcommand*\ufca@stretch{1.432}
 \onehalfspacing
-\setstretch{1.432}
+\setstretch{\ufca@stretch}
 
 % Recuo da primeira linha de cada paragrafo (ABNT: 1,5 cm da margem)
 \setlength{\parindent}{1.5cm}
@@ -1157,10 +1186,23 @@
 %% ------------------------------------------------------------------
 %% 11. Legendas e fonte
 %% ------------------------------------------------------------------
+%% Manual de normalizacao da Biblioteca da UFCA:
+%%   - titulo de figuras e tabelas: corpo 12, negrito, entrelinhas 1,5;
+%%   - indicacao de fonte: corpo 10, entrelinhas simples.
+%% O corpo da figura ou da tabela em si nao e alterado pela classe.
+%% Os dois formatos sao comandos publicos, para que o documento possa
+%% redefini-los no preambulo.
+\newcommand\formatolegenda{\setstretch{\ufca@stretch}\normalsize\bfseries}
+\newcommand\formatofonte{\setstretch{1}\footnotesize}
+
+% O caption so aceita chaves conhecidas em "font="; codigo arbitrario
+% entra por \DeclareCaptionFont, que o resolve na hora de compor -- e
+% assim um \renewcommand\formatolegenda no preambulo ainda vale.
+\DeclareCaptionFont{ufca@legenda}{\formatolegenda}
 \captionsetup{%
   format=hang,               % linhas seguintes alinham com o inicio do titulo
   labelsep=endash,           % "Figura 1 -- Titulo" (travessao, como nas listas)
-  font={small,singlespacing},% fonte menor e espacamento simples (padrao ABNT)
+  font=ufca@legenda,         % corpo 12, negrito, entrelinhas 1,5
   justification=centering,   % centralizado; use raggedright p/ alinhar a esquerda
   singlelinecheck=true,      % legenda de uma linha so e sempre centralizada
   skip=0.2\baselineskip      % distancia entre a figura e a legenda
@@ -1169,10 +1211,13 @@
 % Legenda com ponto final no corpo e sem ponto nas listas
 \newcommand{\legenda}[1]{\caption{#1}}
 
-% Indicacao de fonte abaixo de figuras e tabelas (ABNT)
+% Indicacao de fonte abaixo de figuras e tabelas (ABNT). O formato e
+% aplicado aqui dentro, e nao herdado do contexto, para valer tambem
+% fora de um flutuante -- caso do longtable, em que a fonte vem apos
+% o \end{longtable}.
 \newcommand{\source}[1]{%
   \par\nopagebreak\vspace*{0.2\baselineskip}%
-  {\centering\small Fonte: #1.\par}\vspace{-.4\baselineskip}} % Cancela a quebra de parágrafo extra
+  {\centering\formatofonte Fonte: #1.\par}\vspace{-.4\baselineskip}} % Cancela a quebra de parágrafo extra
 \let\fonte\source
 
 %% ------------------------------------------------------------------
