@@ -39,7 +39,7 @@
 % implementacao.
 \def\filename{ufca.dtx}
 \def\fileversion{v3.1}
-\def\filedate{2026/11/16}
+\def\filedate{2026/11/24}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -49,7 +49,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1847}
+% \CheckSum{1842}
 %
 % \changes{v2.0.0}{2024/06/20}{Primeira versão funcional.}
 % \changes{v2.1.0}{2024/06/21}{Ajustes de conformidade com a ABNT.}
@@ -64,6 +64,19 @@
 %    Biblioteca: título de figuras e tabelas em 12 negrito com
 %    entrelinhas de 1,5; indicação de fonte em 10 com entrelinhas
 %    simples. Novos comandos \cs{formatolegenda} e \cs{formatofonte}.}
+% \changes{v3.1.0}{2026/11/24}{\cs{declaracaodevalidacao} passa a
+%    receber o nome do arquivo com a declaração e a carregá-lo ao final
+%    do trabalho: o formulário \texttt{validacao.pdf} da Biblioteca,
+%    que o \emph{template} agora traz, ou um arquivo \LaTeX{}. Deixa de
+%    existir a página de instruções impressa quando a declaração não
+%    era informada.}
+% \changes{v3.1.0}{2026/11/24}{O \texttt{latexmkrc} do \emph{template}
+%    passa a construir as listas de símbolos e de abreviaturas por
+%    dependência, no nome do documento em compilação, e a declarar
+%    os arquivos \texttt{.syx}, \texttt{.abx}, \texttt{.los} e
+%    \texttt{.lab} para a limpeza do \texttt{latexmk}.}
+% \changes{v3.1.0}{2026/11/24}{Removido o \texttt{Makefile} do
+%    \emph{template}, cujo papel o \texttt{latexmk} cumpre.}
 %
 % \DoNotIndex{\@ifpackageloaded,\@ifundefined,\@namedef,\@nameuse,\@tempcnta}
 % \DoNotIndex{\@tempdima,\@whilenum,\addtocontents,\addtocounter,\addtolength}
@@ -271,10 +284,28 @@
 % carregado.
 %
 % \DescribeMacro{\fichacatalografica}
-% \DescribeMacro{\declaracaodevalidacao}
-% Recebem o nome de um arquivo PDF de uma página, que é inserido no
-% lugar devido. Se não forem declarados, a classe imprime no lugar uma
+% Recebe o nome de um arquivo PDF de uma página, que é inserido no
+% lugar devido. Se não for declarado, a classe imprime no lugar uma
 % página com as instruções para solicitar o documento.
+%
+% \DescribeMacro{\declaracaodevalidacao}
+% Recebe o nome do arquivo com a declaração de validação, que é
+% carregada ao final do trabalho, depois dos anexos --- não importa
+% onde o comando apareça. A declaração é o formulário distribuído pela
+% Biblioteca, assinado eletronicamente pelo orientador; o
+% \emph{template} traz o arquivo |validacao.pdf| pronto para uso,
+% bastando
+%
+% \begin{verbatim}
+% \declaracaodevalidacao{validacao.pdf}
+% \end{verbatim}
+%
+% Como o formulário já vem com o próprio cabeçalho, a página entra
+% inteira, sem título de capítulo e sem entrada no sumário. Um
+% argumento sem a extensão |.pdf| é tomado como arquivo \LaTeX{} e
+% entra por |\input| --- caminho para quem prefira redigir a
+% declaração no próprio trabalho. O nome vai com as maiúsculas e
+% minúsculas exatas do nome no disco.
 %
 % \section{Estrutura do documento}
 %
@@ -463,7 +494,7 @@
 % da classe é compacto; para seguir a norma à risca, use
 % |\setlength{\referenciassep}{\baselineskip}|.
 %
-% \StopEventually{\PrintChanges\PrintIndex}
+% \StopEventually{\PrintChanges\clearpage\PrintIndex}
 %
 % \section{Implementação}
 %
@@ -519,7 +550,7 @@
 %% 1. Identificacao e classe base
 %% ------------------------------------------------------------------
 \def\fileversion{v3.1}
-\def\filedate{2026/11/16}
+\def\filedate{2026/11/24}
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{ufca}[\filedate\ \fileversion\ UFCA academic monographs]
 \LoadClass[12pt,a4paper,oneside]{book}
@@ -566,7 +597,7 @@
 \newif\ifmaledoc         \maledocfalse        % genero gramatical do tipo de trabalho
 \newif\ifposgrad         \posgradfalse        % pos-graduacao (programa) ou graduacao (curso)
 \newif\ifcataloging@file \cataloging@filefalse% ha ficha catalografica em PDF
-\newif\ifvalidation@file \validation@filefalse% ha ficha catalografica em PDF
+\newif\ifvalidation@file \validation@filefalse% ha declaracao de validacao
 
 \DeclareOption*{\ClassWarning{ufca}{Opcao desconhecida: `\CurrentOption'}}
 
@@ -648,9 +679,30 @@
   \global\cataloging@filetrue
   \ufca@set{local@catalogingfile}{#1}}
 
+% Declaracao de validacao. O argumento e o nome do arquivo que a
+% contem -- "validacao.pdf", o formulario da Biblioteca que acompanha
+% o template. Onde o comando aparece nao importa: o arquivo e sempre
+% carregado ao final do trabalho, depois dos anexos, como pede o
+% manual da Biblioteca.
 \newcommand\declaracaodevalidacao[1]{%
   \global\validation@filetrue
   \ufca@set{local@validationfile}{#1}}
+% O gancho e declarado aqui, antes dos demais \AtEndDocument da
+% classe, para que a declaracao entre na contagem de paginas gravada
+% no .aux.
+\newcommand*\ufca@pdfext{pdf}
+\AtEndDocument{%
+  \ifvalidation@file
+    % O formulario da Biblioteca ja vem com o proprio cabecalho: a
+    % pagina entra como esta, sem titulo de capitulo. Um arquivo sem
+    % a extensao .pdf e tomado como fonte LaTeX.
+    \filename@parse{\local@validationfile}%
+    \ifx\filename@ext\ufca@pdfext
+      \includepdf[pages=1]{\local@validationfile}%
+    \else
+      \input{\local@validationfile}%
+    \fi
+  \fi}
 
 \newcommand\orientador[4]{%
   \ifstrequal{#1}{F}%
@@ -1149,18 +1201,6 @@
   \immediate\write\@auxout{\string\gdef\string\ultimafigura{\thefigure}}%
   \immediate\write\@auxout{\string\gdef\string\ultimatabela{\thetable}}%
   \immediate\write\@auxout{\string\gdef\string\ultimoindicativo{\the\ufca@tocmaxwd}}%
-  \ifvalidation@file
-    \includepdf[pages=1]{\local@validationfile}
-  \else
-    \chapter{DECLARAÇÃO DE VALIDAÇÃO}
-    \vspace*{\fill}
-    \noindent\rule{\textwidth}{0.5pt}\par
-    \noindent\begin{center}
-      Página reservada para a Declaração de Validação.\par
-      Ela deverá ser assinada pelo(a) professor(a) orientador(a) e anexada ao trabalho, com a finalidade de atestar que o trabalho se encontra em sua versão final, em conformidade com as alterações sugeridas pela banca examinadora. O documento certifica, ainda, que o(a) estudante realizou a revisão final do conteúdo textual e da formatação, atendendo às normas acadêmicas vigentes.\par
-    \end{center}\par
-    \noindent\rule{\textwidth}{0.5pt}\par
-  \fi
 }
 \AtBeginDocument{%
   \ufca@setnumwidth{Figura}{\ultimafigura}{\cftfignumwidth}%

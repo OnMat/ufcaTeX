@@ -116,8 +116,27 @@ if (scalar(@ist) > 0) {
 #####################################
 # list of symbols and abbreviations #
 #####################################
-system("makeindex -s ufca.ist -o output.los output.syx");
-system("makeindex -s ufca.ist -o output.lab output.abx");
+# A classe grava as entradas brutas em .syx (simbolos) e .abx
+# (abreviaturas); o makeindex, com o estilo ufca.ist, as ordena em
+# .los e .lab, que a classe le na compilacao seguinte. Como
+# dependencias, o latexmk as reconstroi sozinho, no nome do documento
+# que estiver compilando.
+add_cus_dep('syx', 'los', 0, 'syx2los');
+sub syx2los {
+    system("makeindex -s ufca.ist -o \"$_[0].los\" \"$_[0].syx\"");
+}
+add_cus_dep('abx', 'lab', 0, 'abx2lab');
+sub abx2lab {
+    system("makeindex -s ufca.ist -o \"$_[0].lab\" \"$_[0].abx\"");
+}
+
+###################################
+# arquivos removidos por `-c'/`-C' #
+###################################
+# O latexmk nao conhece as extensoes das listas de simbolos e de
+# abreviaturas, nem a tabela xref extraida do PDF pelo
+# pos-processamento acima.
+push @generated_exts, 'syx', 'los', 'abx', 'lab', 'pdfxref';
 
 ################
 # nomenclature #

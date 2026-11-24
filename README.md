@@ -60,6 +60,6 @@ Two or three passes are needed: several of the class's measurements are taken
 in one run and applied in the next, via the `.aux` file. `latexmk` takes care
 of this, including the calls to `biber` and `makeindex`.
 
-### Para alterar a classe
+### Modifying the class
 
 Edit `ufca.dtx` — never the stripped `ufca.cls` — and regenerate it with `luatex ufca.ins`.
